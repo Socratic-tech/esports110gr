@@ -1,152 +1,137 @@
-/* --------------------------------------------------------------
-   Review Studio 2003 Training Quest Engine
-   Controls screen flow, module sequencing & draft storage
--------------------------------------------------------------- */
+// ESPORTS 110 Game Review Training - Quest Navigation
+// Handles section selection, tab switching, and content display
 
-let currentModuleIndex = 0;
-let currentScreen = "briefing";
-
-const moduleSequence = ["briefing", "analysisLab", "draftConsole"];
-const container = document.getElementById("screen-container");
-const sidebar = document.getElementById("sidebar-modules");
-
-function initQuest() {
-    renderSidebar();
-    renderScreen();
-    updateButtons();
-}
-
-/* ---------------- SIDEBAR ---------------- */
-
-function renderSidebar() {
-    sidebar.innerHTML = "";
-
-    MODULES.forEach((m, i) => {
-        const li = document.createElement("li");
-        li.textContent = m.name;
-        li.className = (i === currentModuleIndex) ? "active" : "inactive";
-        sidebar.appendChild(li);
-    });
-}
-
-/* ---------------- SCREEN RENDERING ---------------- */
-
-function renderScreen() {
-    const mod = MODULES[currentModuleIndex];
-    const screenType = currentScreen;
-
-    let html = "";
-
-    if (screenType === "briefing") {
-        html = `
-            <div class="screen active">
-                <h2>${mod.briefing.title}</h2>
-                <p>${mod.briefing.text}</p>
-            </div>
-        `;
+class GameReviewQuest {
+    constructor() {
+        this.currentSection = 'introduction';
+        this.currentTab = 'model'; // model, explain, or practice
+        this.init();
     }
 
-    else if (screenType === "analysisLab") {
-        html = `
-            <div class="screen active">
-                <h2>${mod.analysisLab.title}</h2>
-
-                <div class="artifact-box">
-                    <h4>${mod.analysisLab.excerptLabel}</h4>
-                    <div class="excerpt-box">
-                        <div class="excerpt-header">Professional Excerpt</div>
-                        <p>${mod.analysisLab.excerpt}</p>
-                    </div>
-
-                    <h4>Why This Works</h4>
-                    <p>${mod.analysisLab.explanation}</p>
-                </div>
-            </div>
-        `;
+    init() {
+        // Load initial content
+        this.renderNav();
+        this.renderContent();
+        this.attachEventListeners();
     }
 
-    else if (screenType === "draftConsole") {
-        const saved = localStorage.getItem(mod.draftConsole.storageKey) || "";
+    renderNav() {
+        // Build section navigation
+        const navContainer = document.getElementById('section-nav');
+        
+        const list = document.createElement('nav');
+        list.className = 'section-list';
 
-        html = `
-            <div class="screen active">
-                <h2>${mod.draftConsole.title}</h2>
-                <p>${mod.draftConsole.instructions}</p>
+        questData.sections.forEach(section => {
+            const item = document.createElement('div');
+            item.className = `nav-item ${section.id === this.currentSection ? 'active' : ''}`;
+            
+            const button = document.createElement('button');
+            button.className = 'nav-button';
+            button.textContent = section.title;
+            button.setAttribute('data-section', section.id);
+            
+            button.addEventListener('click', () => {
+                this.setSection(section.id);
+            });
 
-                <div class="draft-console">
-                    <textarea class="draft-input"
-                              id="draftInput">${saved}</textarea>
-                </div>
-            </div>
-        `;
+            item.appendChild(button);
+            list.appendChild(item);
+        });
+
+        navContainer.innerHTML = '';
+        navContainer.appendChild(list);
     }
 
-    container.innerHTML = html;
+    renderContent() {
+        // Get current section data
+        const section = questData.sections.find(s => s.id === this.currentSection);
+        
+        // Update header
+        const header = document.getElementById('section-header');
+        header.innerHTML = `
+            <h2>${section.title}</h2>
+            <p class="section-subtitle">${section.description}</p>
+        `;
 
-    /* Attach typing handler for storage */
-    if (screenType === "draftConsole") {
-        document.getElementById("draftInput").addEventListener("input", (e) => {
-            localStorage.setItem(MODULES[currentModuleIndex].draftConsole.storageKey, e.target.value);
+        // Build tabs
+        const tabsContainer = document.getElementById('section-tabs');
+        tabsContainer.innerHTML = '';
+
+        const tabList = document.createElement('div');
+        tabList.className = 'tab-list';
+
+        ['model', 'explain', 'practice'].forEach(tabName => {
+            const tab = document.createElement('button');
+            tab.className = `tab-button ${tabName === this.currentTab ? 'active' : ''}`;
+            tab.textContent = this.formatTabName(tabName);
+            tab.setAttribute('data-tab', tabName);
+            
+            tab.addEventListener('click', () => {
+                this.setTab(tabName);
+            });
+
+            tabList.appendChild(tab);
+        });
+
+        tabsContainer.appendChild(tabList);
+
+        // Render tab content
+        this.renderTabContent(section);
+    }
+
+    renderTabContent(section) {
+        const contentContainer = document.getElementById('section-content');
+        const tabData = section[this.currentTab];
+
+        contentContainer.innerHTML = `
+            <div class="tab-pane active">
+                <h3>${tabData.title}</h3>
+                ${tabData.content}
+            </div>
+        `;
+
+        // Add source attribution if model
+        if (this.currentTab === 'model' && tabData.source) {
+            const source = document.createElement('p');
+            source.className = 'source-attribution';
+            source.innerHTML = `<em>Source: ${tabData.source}</em>`;
+            contentContainer.appendChild(source);
+        }
+    }
+
+    setSection(sectionId) {
+        this.currentSection = sectionId;
+        this.currentTab = 'model'; // Reset to model when changing sections
+        this.renderNav();
+        this.renderContent();
+        
+        // Scroll to top of content
+        document.getElementById('section-header').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setTab(tabName) {
+        this.currentTab = tabName;
+        const section = questData.sections.find(s => s.id === this.currentSection);
+        this.renderTabContent(section);
+        
+        // Update active tab button
+        document.querySelectorAll('.tab-button').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
         });
     }
-}
 
-/* ---------------- BUTTON LOGIC ---------------- */
-
-document.getElementById("nextBtn").addEventListener("click", () => {
-    advance();
-});
-
-document.getElementById("backBtn").addEventListener("click", () => {
-    retreat();
-});
-
-function advance() {
-    const screenIndex = moduleSequence.indexOf(currentScreen);
-
-    if (screenIndex < moduleSequence.length - 1) {
-        currentScreen = moduleSequence[screenIndex + 1];
-    } else {
-        // Move to next module
-        if (currentModuleIndex < MODULES.length - 1) {
-            currentModuleIndex++;
-            currentScreen = "briefing";
-            renderSidebar();
-        }
+    formatTabName(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1);
     }
 
-    renderScreen();
-    updateButtons();
-}
-
-function retreat() {
-    const screenIndex = moduleSequence.indexOf(currentScreen);
-
-    if (screenIndex > 0) {
-        currentScreen = moduleSequence[screenIndex - 1];
-    } else {
-        // Move to previous module
-        if (currentModuleIndex > 0) {
-            currentModuleIndex--;
-            currentScreen = "draftConsole";
-            renderSidebar();
-        }
+    attachEventListeners() {
+        // Event delegation is handled in renderNav and renderContent
+        // This method is reserved for other interactive elements
     }
-
-    renderScreen();
-    updateButtons();
 }
 
-function updateButtons() {
-    const screenIndex = moduleSequence.indexOf(currentScreen);
-
-    document.getElementById("backBtn").style.visibility =
-        (currentModuleIndex === 0 && currentScreen === "briefing") ? "hidden" : "visible";
-
-    document.getElementById("nextBtn").textContent =
-        (screenIndex === moduleSequence.length - 1 && currentModuleIndex === MODULES.length - 1)
-            ? "Complete"
-            : "Next";
-}
-
-initQuest();
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new GameReviewQuest();
+});
