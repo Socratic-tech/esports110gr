@@ -1,14 +1,223 @@
-.content{padding:16px;}
-.panel{background:#f7f7f7;border-radius:8px;padding:16px;margin:8px;}
-.h1{font-size:20px;}
-.h2{font-size:16px;}
-.h3{font-size:14px;}
-.list{margin-left:20px;}
-.btn{padding:8px 12px;border:1px solid #777;border-radius:6px;}
-.primary{background:#cfe2ff;}
-.tabbar{display:flex;gap:6px;margin:10px 0;}
-.tab{padding:6px 10px;border:1px solid #777;cursor:pointer;}
-.tab.active{background:#cfe2ff;}
-.hidden{display:none;}
-.textarea{width:100%;height:90px;}
-.input{width:100%;}
+/* -----------------------------------------------------------
+   Review Studio 2003 Training OS — Global Stylesheet
+   app.css = global layout, typography, color palette
+------------------------------------------------------------*/
+
+/* ---------- RESET ---------- */
+html, body, h1, h2, h3, h4, h5, p, ul, li, nav, section, article {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Trebuchet MS", Tahoma, Verdana, sans-serif;
+    background: #1d1f27;
+    color: #e5e5e5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* -----------------------------------------------------------
+   COLOR PALETTE — Hybrid 2003 Training Simulator
+------------------------------------------------------------*/
+
+:root {
+    --bg-main: #1d1f27;
+    --bg-panel: #2b2e39;
+    --bg-panel-alt: #323541;
+    --bg-accent: #3a5b88;
+    --bg-accent-light: #4c78b4;
+
+    --text-bright: #ffffff;
+    --text-soft: #d0d0d0;
+    --text-dim: #a0a0a0;
+
+    --border-strong: #4d5260;
+    --border-soft: #3a3e4a;
+
+    --highlight: #8fb0ff;
+}
+
+/* -----------------------------------------------------------
+   LAYOUT CONTAINERS
+------------------------------------------------------------*/
+
+.wrapper {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-window {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.45);
+}
+
+/* -----------------------------------------------------------
+   HEADINGS
+------------------------------------------------------------*/
+
+h1 {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--highlight);
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+}
+
+h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--text-bright);
+}
+
+h3 {
+    font-size: 1.15rem;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    color: var(--text-soft);
+}
+
+/* -----------------------------------------------------------
+   TEXT FORMATTING
+------------------------------------------------------------*/
+
+p {
+    margin-bottom: 12px;
+}
+
+ul {
+    margin-left: 20px;
+    margin-bottom: 12px;
+    color: var(--text-soft);
+}
+
+strong {
+    color: var(--text-bright);
+}
+
+/* -----------------------------------------------------------
+   LINKS (Non-modern, Training-OS style)
+------------------------------------------------------------*/
+
+a {
+    color: var(--highlight);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* -----------------------------------------------------------
+   CONTENT PANELS
+------------------------------------------------------------*/
+
+.panel {
+    background: var(--bg-panel-alt);
+    border: 1px solid var(--border-soft);
+    padding: 16px;
+    margin-bottom: 18px;
+    border-radius: 4px;
+}
+
+/* Subtle training OS header inside content panels */
+.panel-header {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--highlight);
+}
+
+/* -----------------------------------------------------------
+   BUTTONS (used sparingly)
+------------------------------------------------------------*/
+
+.rs-button {
+    display: inline-block;
+    background: var(--bg-accent);
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-strong);
+    color: #fff;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 0.95rem;
+}
+
+.rs-button:hover {
+    background: var(--bg-accent-light);
+}
+
+/* -----------------------------------------------------------
+   SIDEBAR LAYOUT
+------------------------------------------------------------*/
+
+.sidebar-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+}
+
+.sidebar {
+    background: var(--bg-panel-alt);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.sidebar h2 {
+    font-size: 1.1rem;
+    color: var(--highlight);
+}
+
+.sidebar ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-soft);
+}
+
+.sidebar a:hover {
+    background: var(--bg-accent);
+    color: #fff;
+}
+
+/* -----------------------------------------------------------
+   MISSION / MODULE HEADERS
+------------------------------------------------------------*/
+
+.module-header {
+    background: var(--bg-accent);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border-strong);
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Decorative background hook for Sora assets */
+.body-texture {
+    background: url("../assets/bg-xp01.png") repeat;
+}
+
+/* END app.css */
