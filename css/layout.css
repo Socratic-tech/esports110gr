@@ -1,0 +1,583 @@
+/* ESPORTS 110 Game Review Training
+   Layout, Grid, and Component Positioning */
+
+/* Page Structure */
+.page-header {
+    padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xl);
+}
+
+.page-header h1 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.main-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-footer {
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+}
+
+/* Hero Section */
+.hero {
+    margin-bottom: var(--spacing-xl);
+}
+
+.hero p {
+    font-size: 1.1rem;
+    line-height: var(--line-height-loose);
+}
+
+/* Pathway / Grid Layout */
+.pathway {
+    margin-bottom: var(--spacing-xl);
+}
+
+.pathway h2 {
+    margin-bottom: var(--spacing-lg);
+}
+
+.pathway-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.pathway-card {
+    padding: var(--spacing-lg);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    flex-direction: column;
+}
+
+.pathway-card h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+.pathway-card p {
+    flex-grow: 1;
+    margin-bottom: var(--spacing-md);
+}
+
+.pathway-card .button {
+    align-self: flex-start;
+}
+
+.phase-number {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* How It Works Section */
+.how-it-works {
+    margin-bottom: var(--spacing-xl);
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.two-column > div h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Start Section */
+.start-section {
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg);
+    background-color: var(--color-primary-light);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+}
+
+.start-section h2 {
+    margin-top: 0;
+}
+
+/* Content Sections */
+.intro-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.intro-section .lead {
+    margin-bottom: var(--spacing-md);
+}
+
+.content-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.content-section h2 {
+    margin-bottom: var(--spacing-md);
+}
+
+.requirement {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background-color: var(--color-surface);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 4px;
+}
+
+.requirement h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+.requirement p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.spec-block {
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md);
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius);
+}
+
+.spec-block h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+.next-section {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background-color: var(--color-primary-light);
+    border-radius: var(--border-radius-lg);
+    text-align: center;
+}
+
+.next-section h2 {
+    margin-top: 0;
+}
+
+/* Placeholder */
+.placeholder-section {
+    margin: var(--spacing-xl) 0;
+}
+
+.placeholder-box {
+    padding: var(--spacing-xl);
+    text-align: center;
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+.placeholder-box h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.placeholder-box .button {
+    margin-top: var(--spacing-lg);
+}
+
+/* ========================================
+   QUEST-SPECIFIC LAYOUT
+   ======================================== */
+
+.quest-container {
+    min-height: 100vh;
+    background-color: var(--color-background);
+}
+
+.quest-header {
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--spacing-lg);
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.quest-header h1 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.quest-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-lg);
+    max-width: 1400px;
+    margin: var(--spacing-lg) auto;
+    padding: 0 var(--spacing-lg);
+}
+
+/* Sidebar Navigation */
+.quest-sidebar {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-md);
+    height: fit-content;
+    position: sticky;
+    top: var(--spacing-lg);
+}
+
+.sidebar-header {
+    margin-bottom: var(--spacing-md);
+}
+
+.sidebar-label {
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.section-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.nav-item {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.nav-button {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    font-size: 0.95rem;
+}
+
+.nav-button:hover {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.nav-item.active .nav-button {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.sidebar-footer {
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+}
+
+.sidebar-note {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    line-height: var(--line-height-tight);
+    margin: 0;
+}
+
+/* Main Content Area */
+.quest-main {
+    background-color: var(--color-background);
+}
+
+.section-header {
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-header h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+.section-header .section-subtitle {
+    margin: 0;
+    color: var(--color-text-light);
+}
+
+/* Tabs */
+.tabs-area {
+    margin-bottom: var(--spacing-lg);
+}
+
+.tab-list {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: 0;
+}
+
+.tab-button {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-light);
+    transition: all var(--transition-normal);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+}
+
+.tab-button:hover {
+    color: var(--color-text);
+    background-color: var(--color-surface);
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+/* Content Area */
+.content-area {
+    background-color: var(--color-background);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.tab-pane {
+    animation: fadeIn 150ms ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-pane h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.tab-pane ul, .tab-pane ol {
+    margin: var(--spacing-md) 0;
+}
+
+/* Practice Prompts */
+.practice-prompt {
+    margin: var(--spacing-md) 0;
+    padding: var(--spacing-md);
+    background-color: var(--color-surface);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 4px;
+}
+
+.practice-prompt p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.practice-prompt p:last-child {
+    margin-bottom: 0;
+}
+
+.practice-prompt em {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+}
+
+/* Source Attribution */
+.source-attribution {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+}
+
+/* Quest Footer */
+.quest-footer {
+    text-align: center;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+}
+
+.progress-text {
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.next-steps {
+    color: var(--color-text);
+    margin: 0;
+}
+
+/* Progress Bar */
+.quest-progress-bar {
+    background-color: var(--color-surface);
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--spacing-xl);
+}
+
+.progress-label {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    margin-top: 0;
+    font-size: 0.95rem;
+}
+
+.progress-indicators {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-border);
+    transition: background-color var(--transition-normal);
+}
+
+.progress-name {
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .quest-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .quest-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    .quest-header {
+        padding: var(--spacing-md);
+    }
+
+    .quest-layout {
+        grid-template-columns: 1fr;
+        margin: var(--spacing-md) auto;
+        padding: 0 var(--spacing-md);
+    }
+
+    .quest-sidebar {
+        order: 2;
+    }
+
+    .quest-main {
+        order: 1;
+    }
+
+    .tab-list {
+        gap: 0;
+        overflow-x: auto;
+    }
+
+    .tab-button {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.9rem;
+    }
+
+    .content-area {
+        padding: var(--spacing-md);
+    }
+
+    .pathway-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-indicators {
+        gap: var(--spacing-md);
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .button-group {
+        gap: var(--spacing-sm);
+    }
+
+    .button {
+        padding: 0.65rem 1.2rem;
+        font-size: 0.9rem;
+    }
+}
