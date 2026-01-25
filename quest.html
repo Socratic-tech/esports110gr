@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Training Quest — Review Studio 2003</title>
+  <link rel="stylesheet" href="css/xp.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="desktop">
+  <div class="window xp-window">
+    <div class="titlebar">
+      <span class="title">Review Studio 2003 — Training Quest</span>
+    </div>
+
+    <div class="menubar">
+      <a class="menu-btn" href="index.html">Home</a>
+      <a class="menu-btn" href="proposal.html">Game Proposal</a>
+      <a class="menu-btn" href="quest.html">Training Quest</a>
+      <a class="menu-btn" href="relic.html">Outline Relic</a>
+      <div class="menubar-spacer"></div>
+      <span class="menubar-text">Learn → Deconstruct → Practice</span>
+    </div>
+
+    <div class="content three-col">
+      <aside class="panel sidebar">
+        <h2 class="h2">Sections</h2>
+        <ul class="list" id="sections"></ul>
+      </aside>
+
+      <main class="panel main">
+        <h1 class="h1" id="sectionTitle"></h1>
+        <p class="muted" id="sectionPurpose"></p>
+
+        <div class="tabbar">
+          <button class="tab active" data-tab="learn">1) Learn</button>
+          <button class="tab" data-tab="deconstruct">2) Deconstruct</button>
+          <button class="tab" data-tab="practice">3) Practice</button>
+        </div>
+
+        <section id="learn" class="tabpanel">
+          <h3 class="h3">What professional reviewers do</h3>
+          <ul class="list" id="learnList"></ul>
+          <div class="callout">
+            <div class="callout-title">Professional-style example</div>
+            <div class="callout-body" id="sampleText"></div>
+          </div>
+        </section>
+
+        <section id="deconstruct" class="tabpanel hidden">
+          <h3 class="h3">Why this works</h3>
+          <ul class="list" id="deconstructList"></ul>
+        </section>
+
+        <section id="practice" class="tabpanel hidden">
+          <h3 class="h3">Your outline notes</h3>
+          <label class="label">Bullet notes</label>
+          <textarea class="textarea" id="notes"></textarea>
+          <label class="label">Planned visuals / clips</label>
+          <textarea class="textarea" id="evidence"></textarea>
+          <label class="label">Personal insight</label>
+          <input class="input" id="insight" />
+        </section>
+      </main>
+
+      <aside class="panel rightbar">
+        <h2 class="h2">Navigation</h2>
+        <button class="btn" id="prev">◄ Back</button>
+        <button class="btn primary" id="next">Next ►</button>
+        <div class="hr"></div>
+        <p class="small muted">Autosaves locally.</p>
+      </aside>
+    </div>
+
+    <div class="statusbar">
+      <span id="status">Ready.</span>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/quest.js"></script>
+</body>
+</html>
