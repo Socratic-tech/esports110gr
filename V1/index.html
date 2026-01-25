@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Review Studio 2003 — Training Quest</title>
+  <link rel="stylesheet" href="css/xp.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="titlebar">
+      <div class="titlebar__left">
+        <span class="appIcon" aria-hidden="true"></span>
+        <span class="titlebar__title">Review Studio 2003 — Training Quest</span>
+      </div>
+      <div class="titlebar__right">
+        <span class="badge" id="saveStatus">Ready</span>
+      </div>
+    </header>
+
+    <div class="menubar">
+      <button class="menuBtn" id="btnNew">New</button>
+      <button class="menuBtn" id="btnExportRtf">Export .RTF</button>
+      <button class="menuBtn" id="btnPrint">Print / Save PDF</button>
+      <button class="menuBtn" id="btnRelic">Open Relic Generator</button>
+      <div class="menubar__spacer"></div>
+      <button class="menuBtn" id="btnReset">Reset</button>
+    </div>
+
+    <main class="mainGrid">
+      <!-- Left tasks / quest log -->
+      <aside class="panel">
+        <div class="panel__header">Quest Log</div>
+        <div class="panel__body">
+          <div class="questMeta">
+            <div class="fieldRow">
+              <label class="label">Student</label>
+              <input class="input" id="studentName" placeholder="Your name" />
+            </div>
+            <div class="fieldRow">
+              <label class="label">Game</label>
+              <input class="input" id="gameTitle" placeholder="Game title" />
+            </div>
+            <div class="fieldRow">
+              <label class="label">Platform</label>
+              <input class="input" id="platform" placeholder="PC / PS5 / Switch / etc." />
+            </div>
+            <div class="fieldRow">
+              <label class="label">Hours played</label>
+              <input class="input" id="hoursPlayed" placeholder="e.g., 12" />
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="sectionList" id="sectionList"></div>
+
+          <div class="divider"></div>
+
+          <div class="hintBox">
+            <div class="hintTitle">Training Loop</div>
+            <ol class="hintList">
+              <li><b>Observe</b> a pro example</li>
+              <li><b>Deconstruct</b> what the critic is doing</li>
+              <li><b>Practice</b> with your outline bullets</li>
+              <li><b>Check</b>: add at least 1 clip + 1 insight</li>
+            </ol>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main workspace -->
+      <section class="workspace panel">
+        <div class="panel__header">
+          <div class="tabs" id="modeTabs">
+            <button class="tab isActive" data-mode="observe">Observe</button>
+            <button class="tab" data-mode="deconstruct">Deconstruct</button>
+            <button class="tab" data-mode="practice">Practice</button>
+            <button class="tab" data-mode="check">Check</button>
+          </div>
+          <div class="workspaceHeaderRight">
+            <span class="smallLabel">Section:</span>
+            <span class="pill" id="currentSectionLabel">Introduction</span>
+          </div>
+        </div>
+
+        <div class="panel__body workspaceBody">
+          <!-- Observe -->
+          <div class="modePane" id="paneObserve">
+            <div class="twoCol">
+              <div>
+                <h2 class="h2">What pros do in this section</h2>
+                <ul class="bullets" id="observeDo"></ul>
+                <div class="divider"></div>
+                <h3 class="h3">Pro move (pattern)</h3>
+                <div class="callout" id="observePattern"></div>
+              </div>
+              <div>
+                <h2 class="h2">Example (styled like a review excerpt)</h2>
+                <div class="exampleBox" id="observeExample"></div>
+                <div class="divider"></div>
+                <h3 class="h3">Evidence cue</h3>
+                <div class="callout" id="observeEvidenceCue"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deconstruct -->
+          <div class="modePane isHidden" id="paneDeconstruct">
+            <h2 class="h2">Highlight what the critic is doing</h2>
+            <p class="p subtle">
+              Click each line and label it. This trains you to see structure before you write.
+            </p>
+            <div class="deconstructGrid">
+              <div class="panel miniPanel">
+                <div class="panel__header">Excerpt lines</div>
+                <div class="panel__body" id="deconstructLines"></div>
+              </div>
+              <div class="panel miniPanel">
+                <div class="panel__header">Your labels</div>
+                <div class="panel__body">
+                  <div class="labelRow">
+                    <span class="tag tClaim">Claim</span>
+                    <span class="tag tEvidence">Evidence</span>
+                    <span class="tag tCompare">Comparison</span>
+                    <span class="tag tImpact">Impact</span>
+                    <span class="tag tAudience">Audience</span>
+                  </div>
+                  <div class="callout">
+                    Your goal: label at least <b>3</b> lines. Pros constantly cycle:
+                    <b>claim → evidence → impact</b>.
+                  </div>
+                  <div class="divider"></div>
+                  <div id="deconstructSummary" class="callout"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Practice -->
+          <div class="modePane isHidden" id="panePractice">
+            <div class="twoCol">
+              <div>
+                <h2 class="h2">Your outline bullets</h2>
+                <div class="callout subtle">
+                  Bullets + notes only. Complete sentences not required. Be specific enough that you can write/record from this later.
+                </div>
+                <div id="practicePrompts"></div>
+              </div>
+              <div>
+                <h2 class="h2">Visuals / Clip Plan (Required)</h2>
+                <div class="callout">
+                  Add clips/screenshots that <b>prove</b> a point. One “evidence clip” should directly support a critique.
+                </div>
+
+                <div class="evidenceLocker">
+                  <div class="fieldRow">
+                    <label class="label">Add visual/clip</label>
+                    <input class="input" id="evTitle" placeholder="e.g., Combat clip: parry timing feels off" />
+                  </div>
+                  <div class="fieldRow">
+                    <label class="label">Type</label>
+                    <select class="input" id="evType">
+                      <option value="Gameplay Clip">Gameplay Clip</option>
+                      <option value="Screenshot">Screenshot</option>
+                      <option value="Menu/UI Capture">Menu/UI Capture</option>
+                      <option value="Bug/Performance Evidence">Bug/Performance Evidence</option>
+                      <option value="Comparison Clip">Comparison Clip</option>
+                    </select>
+                  </div>
+                  <div class="fieldRow">
+                    <label class="label">Where it goes</label>
+                    <select class="input" id="evPlacement"></select>
+                  </div>
+                  <div class="fieldRow">
+                    <label class="label">What it proves</label>
+                    <input class="input" id="evProves" placeholder="e.g., Input delay causes missed counters" />
+                  </div>
+                  <div class="btnRow">
+                    <button class="btn" id="btnAddEvidence">Add</button>
+                    <button class="btn btnGhost" id="btnClearEvidenceInputs">Clear</button>
+                  </div>
+
+                  <div class="divider"></div>
+                  <div class="evidenceList" id="evidenceList"></div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h2 class="h2">Personal insight</h2>
+                <textarea class="textarea" id="personalInsight" rows="6"
+                  placeholder="What surprised you? What’s your unique perspective? What would you change first—and why?"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Check -->
+          <div class="modePane isHidden" id="paneCheck">
+            <h2 class="h2">Section completion check</h2>
+            <div class="checkGrid">
+              <div class="panel miniPanel">
+                <div class="panel__header">Checklist</div>
+                <div class="panel__body">
+                  <div class="checkItem">
+                    <input type="checkbox" id="chkBullets" />
+                    <label for="chkBullets">I added meaningful bullets/notes for this section</label>
+                  </div>
+                  <div class="checkItem">
+                    <input type="checkbox" id="chkEvidence" />
+                    <label for="chkEvidence">I added at least 1 visual/clip for this section</label>
+                  </div>
+                  <div class="checkItem">
+                    <input type="checkbox" id="chkInsight" />
+                    <label for="chkInsight">I added at least 1 personal insight</label>
+                  </div>
+                  <div class="divider"></div>
+                  <button class="btn" id="btnMarkComplete">Mark Section Complete</button>
+                  <div class="divider"></div>
+                  <div class="callout" id="completionMsg"></div>
+                </div>
+              </div>
+
+              <div class="panel miniPanel">
+                <div class="panel__header">Progress</div>
+                <div class="panel__body">
+                  <div class="progressBar">
+                    <div class="progressBar__fill" id="progressFill" style="width:0%"></div>
+                  </div>
+                  <p class="p subtle" id="progressText">0% complete</p>
+                  <div class="divider"></div>
+                  <div class="callout">
+                    When all sections are complete, export your outline (.RTF) and submit it.
+                    You can also open the <b>Relic Generator</b> for a printable one-pager version.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer controls -->
+          <div class="footerBar">
+            <div class="footerLeft">
+              <span class="statusDot" id="statusDot" aria-hidden="true"></span>
+              <span class="subtle" id="statusText">Welcome to the Training Quest.</span>
+            </div>
+            <div class="footerRight">
+              <button class="btn btnGhost" id="btnPrev">Back</button>
+              <button class="btn" id="btnNext">Next ></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="statusbar">
+      <span>Tip: Write like a critic: <b>claim → evidence → impact</b>.</span>
+      <span class="statusbar__right" id="clock"></span>
+    </footer>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
