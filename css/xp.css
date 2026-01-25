@@ -1,7 +1,152 @@
-body{font-family:Tahoma,Arial,sans-serif;background:#1e90ff;margin:0;}
-.desktop{padding:20px;}
-.window{background:#e7e7e7;border-radius:10px;}
-.titlebar{background:#2b64d6;color:#fff;padding:10px;font-weight:bold;}
-.menubar{background:#ddd;padding:6px;}
-.menu-btn{margin-right:6px;text-decoration:none;color:#000;}
-.statusbar{background:#ddd;padding:6px;font-size:12px;}
+/* -----------------------------------------------------------
+   Review Studio Training OS — Interface Layer
+   xp.css = Panels, Wizard UI, Chrome
+------------------------------------------------------------*/
+
+/* WINDOW CHROME ------------------------------------------------ */
+
+.window {
+    background: var(--bg-panel-alt);
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 0;
+    box-shadow: 0 0 22px rgba(0,0,0,0.5);
+}
+
+.window-titlebar {
+    background: url("../assets/title-bar.png");
+    background-size: cover;
+    padding: 10px 14px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ffffff;
+    border-bottom: 2px solid var(--border-strong);
+}
+
+.window-body {
+    padding: 20px;
+}
+
+/* WIZARD ------------------------------------------------------- */
+
+.wizard-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.wizard-sidebar {
+    width: 200px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-strong);
+    padding: 20px;
+}
+
+.wizard-sidebar h3 {
+    margin-bottom: 12px;
+    color: var(--highlight);
+    font-size: 1rem;
+}
+
+.wizard-sidebar ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+.wizard-sidebar li {
+    margin-bottom: 10px;
+}
+
+.wizard-sidebar .inactive {
+    color: var(--text-dim);
+}
+
+.wizard-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Screens inside wizard */
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* WIZARD NAV BUTTONS ------------------------------------------ */
+
+.wizard-controls {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-strong);
+}
+
+.wizard-btn {
+    background: var(--bg-accent);
+    border: 1px solid var(--border-strong);
+    padding: 8px 16px;
+    color: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.wizard-btn:hover {
+    background: var(--bg-accent-light);
+}
+
+/* TRAINING ARTIFACT CALLOUT ----------------------------------- */
+
+.artifact-box {
+    background: #242630;
+    border-left: 4px solid var(--highlight);
+    padding: 14px;
+    margin: 20px 0;
+}
+
+.artifact-box h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--highlight);
+}
+
+/* REVIEW EXCERPT PANEL (Professional example) ----------------- */
+
+.excerpt-box {
+    background: #1f212b;
+    border: 1px solid var(--border-soft);
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+}
+
+.excerpt-header {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--highlight);
+    margin-bottom: 10px;
+}
+
+/* DRAFT CONSOLE ------------------------------------------------ */
+
+.draft-console {
+    background: #2d303a;
+    border: 1px solid var(--border-strong);
+    padding: 16px;
+    border-radius: 4px;
+}
+
+textarea.draft-input {
+    width: 100%;
+    min-height: 120px;
+    background: #1b1d25;
+    border: 1px solid var(--border-soft);
+    color: var(--text-bright);
+    padding: 10px;
+    font-family: "Consolas", "Courier New", monospace;
+    border-radius: 4px;
+}
+
+/* END xp.css */
