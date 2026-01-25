@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Review Studio 2003 — Relic Generator</title>
+  <link rel="stylesheet" href="css/xp.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="titlebar">
+      <div class="titlebar__left">
+        <span class="appIcon" aria-hidden="true"></span>
+        <span class="titlebar__title">Review Studio 2003 — Relic Generator</span>
+      </div>
+      <div class="titlebar__right">
+        <a class="badge linkBadge" href="index.html">Back to Training Quest</a>
+      </div>
+    </header>
+
+    <div class="menubar">
+      <button class="menuBtn" id="btnPrintRelic">Print / Save PDF</button>
+      <button class="menuBtn" id="btnExportRelicRtf">Export Relic .RTF</button>
+      <div class="menubar__spacer"></div>
+      <button class="menuBtn" id="btnClearRelic">Clear Relic</button>
+    </div>
+
+    <main class="panel relicPanel">
+      <div class="panel__header">One-Pager: Review Plan (Auto-filled from your quest)</div>
+      <div class="panel__body relicBody" id="relicBody">
+        <div class="relicHeader">
+          <div><b>Student:</b> <span id="rStudent">—</span></div>
+          <div><b>Game:</b> <span id="rGame">—</span></div>
+          <div><b>Platform:</b> <span id="rPlatform">—</span></div>
+          <div><b>Hours:</b> <span id="rHours">—</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="relicGrid" id="relicSections"></div>
+
+        <div class="divider"></div>
+
+        <h2 class="h2">Visuals / Clips Plan</h2>
+        <div id="rEvidence"></div>
+
+        <div class="divider"></div>
+
+        <h2 class="h2">Personal Insight</h2>
+        <div class="paperBox" id="rInsight"></div>
+      </div>
+    </main>
+
+    <footer class="statusbar">
+      <span>Print works great for PDF submission.</span>
+      <span class="statusbar__right" id="clock2"></span>
+    </footer>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/export.js"></script>
+  <script>
+    // clock
+    const clock2 = document.getElementById('clock2');
+    setInterval(()=>clock2.textContent = new Date().toLocaleString(), 1000);
+
+    const state = window.ReviewQuestState.load() || window.ReviewQuestState.blankState();
+    const $ = (id)=>document.getElementById(id);
+
+    $('rStudent').textContent = state.meta.studentName || '—';
+    $('rGame').textContent = state.meta.gameTitle || '—';
+    $('rPlatform').textContent = state.meta.platform || '—';
+    $('rHours').textContent = state.meta.hoursPlayed || '—';
+
+    const grid = $('relicSections');
+    grid.innerHTML = '';
+    for (const sec of window.ReviewQuestContent.sections) {
+      const notes = state.sections[sec.key]?.notes || {};
+      const card = document.createElement('div');
+      card.className = 'paperCard';
+      card.innerHTML = `
+        <div class="paperCard__title">${sec.label}</div>
+        <div class="paperBox">${window.ReviewQuestExport.renderRelicSection(notes, sec)}</div>
+      `;
+      grid.appendChild(card);
+    }
+
+    // Evidence
+    const ev = state.evidence || [];
+    const rEv = $('rEvidence');
+    if (!ev.length) {
+      rEv.innerHTML = `<div class="paperBox subtle">No visuals/clips added yet.</div>`;
+    } else {
+      rEv.innerHTML = `<div class="paperBox">${window.ReviewQuestExport.renderEvidenceHtml(ev)}</div>`;
+    }
+
+    // Insight
+    $('rInsight').innerHTML = (state.personalInsight || '').trim()
+      ? window.ReviewQuestExport.escapeHtml(state.personalInsight).replace(/\n/g,'<br>')
+      : `<span class="subtle">No personal insight written yet.</span>`;
+
+    // Buttons
+    $('btnPrintRelic').addEventListener('click', ()=>window.print());
+    $('btnExportRelicRtf').addEventListener('click', ()=>{
+      const rtf = window.ReviewQuestExport.buildRtf(state, {mode:'relic'});
+      window.ReviewQuestExport.downloadText(rtf, `${(state.meta.gameTitle||'ReviewPlan').replace(/[^\w\-]+/g,'_')}_Relic.rtf`, 'application/rtf');
+    });
+    $('btnClearRelic').addEventListener('click', ()=>{
+      if (!confirm('Clear ALL saved quest data? This cannot be undone.')) return;
+      window.ReviewQuestState.clear();
+      location.reload();
+    });
+  </script>
+</body>
+</html>
