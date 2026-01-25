@@ -1,47 +1,152 @@
-let current = 0;
-let tab = 'learn';
-const status = document.getElementById('status');
+/* --------------------------------------------------------------
+   Review Studio 2003 Training Quest Engine
+   Controls screen flow, module sequencing & draft storage
+-------------------------------------------------------------- */
+
+let currentModuleIndex = 0;
+let currentScreen = "briefing";
+
+const moduleSequence = ["briefing", "analysisLab", "draftConsole"];
+const container = document.getElementById("screen-container");
+const sidebar = document.getElementById("sidebar-modules");
+
+function initQuest() {
+    renderSidebar();
+    renderScreen();
+    updateButtons();
+}
+
+/* ---------------- SIDEBAR ---------------- */
 
 function renderSidebar() {
-  const ul = document.getElementById('sections');
-  ul.innerHTML = '';
-  SECTIONS.forEach((s, i) => {
-    const li = document.createElement('li');
-    li.textContent = s.title;
-    li.onclick = () => { current = i; render(); };
-    ul.appendChild(li);
-  });
+    sidebar.innerHTML = "";
+
+    MODULES.forEach((m, i) => {
+        const li = document.createElement("li");
+        li.textContent = m.name;
+        li.className = (i === currentModuleIndex) ? "active" : "inactive";
+        sidebar.appendChild(li);
+    });
 }
 
-function render() {
-  const s = SECTIONS[current];
-  document.getElementById('sectionTitle').textContent = s.title;
-  document.getElementById('sectionPurpose').textContent = s.purpose;
+/* ---------------- SCREEN RENDERING ---------------- */
 
-  document.getElementById('learnList').innerHTML = s.learn.map(l => `<li>${l}</li>`).join('');
-  document.getElementById('sampleText').textContent = s.sample;
-  document.getElementById('deconstructList').innerHTML = s.deconstruct.map(d => `<li>${d}</li>`).join('');
+function renderScreen() {
+    const mod = MODULES[currentModuleIndex];
+    const screenType = currentScreen;
 
-  document.querySelectorAll('.tabpanel').forEach(p => p.classList.add('hidden'));
-  document.getElementById(tab).classList.remove('hidden');
+    let html = "";
 
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.tab[data-tab='${tab}']`).classList.add('active');
+    if (screenType === "briefing") {
+        html = `
+            <div class="screen active">
+                <h2>${mod.briefing.title}</h2>
+                <p>${mod.briefing.text}</p>
+            </div>
+        `;
+    }
+
+    else if (screenType === "analysisLab") {
+        html = `
+            <div class="screen active">
+                <h2>${mod.analysisLab.title}</h2>
+
+                <div class="artifact-box">
+                    <h4>${mod.analysisLab.excerptLabel}</h4>
+                    <div class="excerpt-box">
+                        <div class="excerpt-header">Professional Excerpt</div>
+                        <p>${mod.analysisLab.excerpt}</p>
+                    </div>
+
+                    <h4>Why This Works</h4>
+                    <p>${mod.analysisLab.explanation}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    else if (screenType === "draftConsole") {
+        const saved = localStorage.getItem(mod.draftConsole.storageKey) || "";
+
+        html = `
+            <div class="screen active">
+                <h2>${mod.draftConsole.title}</h2>
+                <p>${mod.draftConsole.instructions}</p>
+
+                <div class="draft-console">
+                    <textarea class="draft-input"
+                              id="draftInput">${saved}</textarea>
+                </div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+
+    /* Attach typing handler for storage */
+    if (screenType === "draftConsole") {
+        document.getElementById("draftInput").addEventListener("input", (e) => {
+            localStorage.setItem(MODULES[currentModuleIndex].draftConsole.storageKey, e.target.value);
+        });
+    }
 }
 
-document.querySelectorAll('.tab').forEach(t => {
-  t.onclick = () => { tab = t.dataset.tab; render(); };
+/* ---------------- BUTTON LOGIC ---------------- */
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+    advance();
 });
 
-document.getElementById('next').onclick = () => {
-  if (current < SECTIONS.length - 1) current++;
-  render();
-};
+document.getElementById("backBtn").addEventListener("click", () => {
+    retreat();
+});
 
-document.getElementById('prev').onclick = () => {
-  if (current > 0) current--;
-  render();
-};
+function advance() {
+    const screenIndex = moduleSequence.indexOf(currentScreen);
 
-renderSidebar();
-render();
+    if (screenIndex < moduleSequence.length - 1) {
+        currentScreen = moduleSequence[screenIndex + 1];
+    } else {
+        // Move to next module
+        if (currentModuleIndex < MODULES.length - 1) {
+            currentModuleIndex++;
+            currentScreen = "briefing";
+            renderSidebar();
+        }
+    }
+
+    renderScreen();
+    updateButtons();
+}
+
+function retreat() {
+    const screenIndex = moduleSequence.indexOf(currentScreen);
+
+    if (screenIndex > 0) {
+        currentScreen = moduleSequence[screenIndex - 1];
+    } else {
+        // Move to previous module
+        if (currentModuleIndex > 0) {
+            currentModuleIndex--;
+            currentScreen = "draftConsole";
+            renderSidebar();
+        }
+    }
+
+    renderScreen();
+    updateButtons();
+}
+
+function updateButtons() {
+    const screenIndex = moduleSequence.indexOf(currentScreen);
+
+    document.getElementById("backBtn").style.visibility =
+        (currentModuleIndex === 0 && currentScreen === "briefing") ? "hidden" : "visible";
+
+    document.getElementById("nextBtn").textContent =
+        (screenIndex === moduleSequence.length - 1 && currentModuleIndex === MODULES.length - 1)
+            ? "Complete"
+            : "Next";
+}
+
+initQuest();
