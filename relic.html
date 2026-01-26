@@ -3,43 +3,844 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Review – ESPORTS 110</title>
+    <title>Your Review Outline – ESPORTS 110</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
+    <style>
+        .outline-builder {
+            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-secondary-light) 100%);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-xl);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .game-header {
+            background: var(--color-background);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-bottom: var(--spacing-lg);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .section-builder {
+            margin-bottom: var(--spacing-xl);
+            background: var(--color-background);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--color-primary);
+        }
+
+        .section-header h3 {
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .section-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: var(--spacing-md);
+        }
+
+        .section-tip {
+            background: var(--color-surface);
+            padding: var(--spacing-md);
+            border-left: 3px solid var(--color-accent);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.9rem;
+        }
+
+        .outline-field {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .outline-field label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text);
+        }
+
+        .outline-field textarea {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            min-height: 120px;
+            resize: vertical;
+            transition: all var(--transition-normal);
+        }
+
+        .outline-field textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-lighter);
+        }
+
+        .planner-note {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            font-style: italic;
+            margin-top: var(--spacing-xs);
+        }
+
+        .visuals-section {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .visuals-section h4 {
+            color: var(--color-primary);
+            margin-top: 0;
+        }
+
+        .visual-item {
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--color-background);
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .visual-item input,
+        .visual-item textarea {
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-sm);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+        }
+
+        .visual-item textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .add-visual-btn {
+            padding: 0.625rem 1rem;
+            background: var(--color-surface);
+            border: 1.5px solid var(--color-accent);
+            border-radius: var(--border-radius-lg);
+            color: var(--color-accent);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+        }
+
+        .add-visual-btn:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .remove-visual-btn {
+            padding: 0.5rem 0.75rem;
+            background: var(--color-error);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-top: var(--spacing-sm);
+        }
+
+        .custom-sections {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 2px solid var(--color-border);
+        }
+
+        .add-section-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-secondary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+        }
+
+        .add-section-btn:hover {
+            background: #6d28d9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .builder-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+            flex-wrap: wrap;
+        }
+
+        .button-small {
+            padding: 0.625rem 1rem;
+            font-size: 0.9rem;
+            min-height: 40px;
+        }
+
+        .button-danger {
+            background-color: var(--color-error);
+            color: white;
+        }
+
+        .button-danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .generated-outline {
+            background: var(--color-background);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            display: none;
+        }
+
+        .generated-outline.visible {
+            display: block;
+            animation: slideIn 300ms ease-in-out;
+        }
+
+        .outline-content {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            margin: var(--spacing-lg) 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: var(--line-height-relaxed);
+            font-size: 0.95rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .outline-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .outline-builder {
+                padding: var(--spacing-lg);
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .builder-actions {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header class="page-header">
             <a href="index.html" class="back-link">← Back to Home</a>
             <h1>Phase 2: Your Review</h1>
-            <p class="subtitle">Generate your review outline for submission</p>
+            <p class="subtitle">Build Your Professional Game Review Outline</p>
         </header>
 
         <main class="main-content">
-            <section class="placeholder-section">
-                <div class="placeholder-box">
-                    <h2>Coming Soon</h2>
-                    <p>This section will be used to generate your detailed review outline for submission to Canvas.</p>
-                    
-                    <p>You'll be able to:</p>
-                    <ul class="simple-list">
-                        <li>Review your notes from the Training Quest</li>
-                        <li>Organize them into a structured outline</li>
-                        <li>Export a working document for your final review</li>
-                    </ul>
+            <section class="intro-section">
+                <p class="lead">You've learned how professional reviewers work (Training Quest) and proposed your game (Phase 0). Now it's time to build your detailed review outline.</p>
+                <p>This tool scaffolds you through five core sections plus custom sections. For each, you'll plan your content, visuals, and add your unique perspective. When done, download a formatted outline ready to use as your review blueprint.</p>
+            </section>
 
-                    <p style="margin-top: 2rem;"><strong>For now:</strong> Use the Training Quest to study professional review methodology and build your outline notes as you learn.</p>
+            <section class="outline-builder">
+                <div class="game-header">
+                    <h3>Your Game</h3>
+                    <input type="text" id="outline-game" placeholder="Game title (loads from proposal if available)" style="width: 100%; padding: var(--spacing-sm); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); margin-top: var(--spacing-md);">
+                </div>
 
-                    <div style="margin-top: 2rem;">
-                        <a href="quest.html" class="button button-primary">Return to Training Quest</a>
+                <!-- Introduction Section -->
+                <div class="section-builder">
+                    <div class="section-header">
+                        <h3><span class="section-number">1</span>Introduction</h3>
                     </div>
+
+                    <div class="section-tip">
+                        <strong>Remember:</strong> Hook the audience. Explain why this game matters. Reference industry context, design philosophy, or cultural significance.
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Your Hook & Core Argument</label>
+                        <textarea id="intro-argument" placeholder="• What's the one thing readers need to know?&#10;• Why is this game worth analyzing?&#10;• What's your core thesis?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Context You'll Establish</label>
+                        <textarea id="intro-context" placeholder="• Industry context (trends, conventions)&#10;• Design lineage (what came before)&#10;• Cultural or social significance&#10;• Why now? Why this game?"></textarea>
+                    </div>
+
+                    <div class="visuals-section">
+                        <h4>Opening Visuals</h4>
+                        <div id="intro-visuals"></div>
+                        <button class="add-visual-btn" onclick="addVisual('intro')">+ Add Visual/Clip</button>
+                    </div>
+                </div>
+
+                <!-- Gameplay Section -->
+                <div class="section-builder">
+                    <div class="section-header">
+                        <h3><span class="section-number">2</span>Gameplay</h3>
+                    </div>
+
+                    <div class="section-tip">
+                        <strong>Remember:</strong> Describe specific mechanics, not vaguely. Show how systems create challenge or meaning. Use concrete examples.
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Core Mechanics</label>
+                        <textarea id="gameplay-mechanics" placeholder="• What are the 2-3 fundamental actions?&#10;• What does the player do repeatedly?&#10;• How do these create the experience?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Challenge Design</label>
+                        <textarea id="gameplay-challenge" placeholder="• How is difficulty created? (timing, pattern recognition, resource management)&#10;• How does it scale?&#10;• Why does it work?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Representative Example</label>
+                        <textarea id="gameplay-example" placeholder="• Pick ONE specific boss, level, or sequence&#10;• Show how it exemplifies your larger point about gameplay&#10;• This is what your video will focus on"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Your Unique Take</label>
+                        <textarea id="gameplay-insight" placeholder="What's your original insight about how this game plays? What does it teach?"></textarea>
+                    </div>
+
+                    <div class="visuals-section">
+                        <h4>Gameplay Visuals</h4>
+                        <div id="gameplay-visuals"></div>
+                        <button class="add-visual-btn" onclick="addVisual('gameplay')">+ Add Visual/Clip</button>
+                    </div>
+                </div>
+
+                <!-- Graphics Section -->
+                <div class="section-builder">
+                    <div class="section-header">
+                        <h3><span class="section-number">3</span>Graphics & Art Direction</h3>
+                    </div>
+
+                    <div class="section-tip">
+                        <strong>Remember:</strong> Explain WHY visual choices exist. Connect aesthetics to gameplay and narrative.
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Visual Language & Style</label>
+                        <textarea id="graphics-style" placeholder="• What's the dominant aesthetic? (cel-shading, photorealism, pixel art, etc.)&#10;• Color palette?&#10;• Mood and atmosphere?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Purpose of Visual Choices</label>
+                        <textarea id="graphics-purpose" placeholder="• Why this style and not another?&#10;• What does it accomplish?&#10;• How does it serve the game's themes or gameplay?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Visual Guidance</label>
+                        <textarea id="graphics-guidance" placeholder="• How do colors, contrast, lighting direct attention?&#10;• How does visual design teach the player?&#10;• What stands out? What fades into background?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Specific Visual Moments</label>
+                        <textarea id="graphics-moments" placeholder="• 2-3 specific locations or scenes that exemplify the art direction&#10;• What makes them visually significant?&#10;• What do they reveal about the game's approach?"></textarea>
+                    </div>
+
+                    <div class="visuals-section">
+                        <h4>Art Direction Visuals</h4>
+                        <div id="graphics-visuals"></div>
+                        <button class="add-visual-btn" onclick="addVisual('graphics')">+ Add Visual/Clip</button>
+                    </div>
+                </div>
+
+                <!-- Sound Section -->
+                <div class="section-builder">
+                    <div class="section-header">
+                        <h3><span class="section-number">4</span>Sound & Audio Design</h3>
+                    </div>
+
+                    <div class="section-tip">
+                        <strong>Remember:</strong> Audio is functional design. Explain how sound communicates information, creates emotion, or advances narrative.
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Sonic Identity</label>
+                        <textarea id="sound-identity" placeholder="• What's the sonic approach? (orchestral, synthesized, diegetic, silent, etc.)&#10;• What instruments or sounds define it?&#10;• Composer and music style?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>How Audio Communicates</label>
+                        <textarea id="sound-communication" placeholder="• What does sound tell the player? (danger, progress, emotion, atmosphere, story)&#10;• How does it guide understanding?&#10;• What would the game lose without it?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Emotional Impact</label>
+                        <textarea id="sound-emotion" placeholder="• Specific moments where audio is emotionally powerful&#10;• How does music create resonance?&#10;• What tracks stay with you and why?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Specific Audio Moments</label>
+                        <textarea id="sound-moments" placeholder="• Boss themes, ambient tracks, sound effects, silent moments&#10;• What makes them effective?&#10;• How do they exemplify your larger point?"></textarea>
+                    </div>
+
+                    <div class="visuals-section">
+                        <h4>Audio Demonstrations</h4>
+                        <p style="margin-top: 0; font-size: 0.9rem;">Video clips with clear audio focus</p>
+                        <div id="sound-visuals"></div>
+                        <button class="add-visual-btn" onclick="addVisual('sound')">+ Add Visual/Clip</button>
+                    </div>
+                </div>
+
+                <!-- Verdict Section -->
+                <div class="section-builder">
+                    <div class="section-header">
+                        <h3><span class="section-number">5</span>Verdict & Recommendation</h3>
+                    </div>
+
+                    <div class="section-tip">
+                        <strong>Remember:</strong> Synthesize your analysis. Make a clear recommendation. Acknowledge strengths and weaknesses.
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Core Thesis</label>
+                        <textarea id="verdict-thesis" placeholder="In one sentence, what is this game ultimately about?&#10;What's your final judgment?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Who It's For</label>
+                        <textarea id="verdict-audience" placeholder="• Specific player types who will love this&#10;• What experience do they seek?&#10;• Be specific, not generic"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Who It's NOT For</label>
+                        <textarea id="verdict-limitations" placeholder="• What limitations exist?&#10;• Who might not connect with it?&#10;• Honest assessment of weaknesses"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Broader Significance</label>
+                        <textarea id="verdict-significance" placeholder="• Does it advance the medium?&#10;• Challenge conventions?&#10;• Why should people care beyond entertainment?"></textarea>
+                    </div>
+
+                    <div class="outline-field">
+                        <label>Final Line</label>
+                        <textarea id="verdict-closing" placeholder="What's the line readers will remember?&#10;What feeling do you want to leave them with?"></textarea>
+                    </div>
+
+                    <div class="visuals-section">
+                        <h4>Closing Visuals</h4>
+                        <div id="verdict-visuals"></div>
+                        <button class="add-visual-btn" onclick="addVisual('verdict')">+ Add Visual/Clip</button>
+                    </div>
+                </div>
+
+                <!-- Custom Sections -->
+                <div class="custom-sections">
+                    <h3>Custom Sections (Optional)</h3>
+                    <p>Want sections for Story, Multiplayer, Accessibility, or something unique? Add them here.</p>
+                    <div id="custom-sections-container"></div>
+                    <button class="add-section-btn" onclick="addCustomSection()">+ Add Custom Section</button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="builder-actions">
+                    <button class="button button-primary" onclick="generateOutline()">
+                        📄 Generate Review Outline
+                    </button>
+                    <button class="button button-secondary button-small button-danger" onclick="clearOutlineData()">
+                        🗑️ Clear & Start Over
+                    </button>
+                </div>
+
+                <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: var(--spacing-lg);">
+                    ℹ️ <strong>Your Data:</strong> Automatically saved to your browser (local storage, your device only). Download or copy your outline to submit through Canvas.
+                </p>
+            </section>
+
+            <!-- Generated Outline -->
+            <div class="generated-outline" id="outlineContainer">
+                <div style="border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                    <h3 style="margin: 0 0 var(--spacing-sm) 0;">Your Review Outline</h3>
+                    <p style="margin: 0; color: var(--color-text-light);">Copy to Word/Docs or download as text. This is your blueprint for writing or recording your review.</p>
+                </div>
+
+                <div class="outline-content" id="outlineContent"></div>
+
+                <div class="outline-actions">
+                    <button class="button button-primary" onclick="copyOutlineToClipboard()">
+                        📋 Copy to Clipboard
+                    </button>
+                    <button class="button button-secondary" onclick="downloadOutline()">
+                        ⬇️ Download as Text File
+                    </button>
+                    <button class="button button-secondary" onclick="document.getElementById('outlineContainer').classList.remove('visible')">
+                        ✕ Close Outline
+                    </button>
+                </div>
+            </div>
+
+            <section class="content-section" style="margin-top: var(--spacing-xl);">
+                <h2>Submission & Grading</h2>
+                
+                <div class="spec-block">
+                    <h3>Format</h3>
+                    <p>Submit your outline as <strong>.doc, .pdf, or .rtf</strong> through Canvas. Use this tool to generate, then open the file in Word/Google Docs and format as you like before submitting.</p>
+                </div>
+
+                <div class="spec-block">
+                    <h3>What to Include</h3>
+                    <ul class="simple-list">
+                        <li>All five core sections (or more with custom sections)</li>
+                        <li>Detailed bullet points and notes in each section</li>
+                        <li>Visual/clip planning with placement notes</li>
+                        <li>Personal insights showing your unique perspective</li>
+                    </ul>
+                </div>
+
+                <div class="spec-block">
+                    <h3>Grading Criteria</h3>
+                    <ul class="simple-list">
+                        <li><strong>Thoroughness:</strong> Detailed, specific analysis with examples</li>
+                        <li><strong>Organization:</strong> Clear structure that guides your review</li>
+                        <li><strong>Visual Planning:</strong> Strategic placement of screenshots/clips</li>
+                        <li><strong>Creativity:</strong> Unique structure or custom sections if relevant</li>
+                        <li><strong>Personal Insight:</strong> Your unique perspective evident throughout</li>
+                    </ul>
                 </div>
             </section>
 
             <footer class="page-footer">
-                <p><em>This feature is under development.</em> Check back after completing the Training Quest for outline generation tools.</p>
+                <p><em>Canvas is your submission system.</em> Use this tool to structure your outline, then submit your formatted version through Canvas. Your instructor reviews the file you submit, not this tool.</p>
             </footer>
         </main>
     </div>
+
+    <script>
+        const OUTLINE_STORAGE_KEY = 'esports110_outline';
+        const PROPOSAL_STORAGE_KEY = 'esports110_proposal';
+
+        let customSectionCount = 0;
+
+        // Load data on page load
+        function loadOutlineData() {
+            const saved = localStorage.getItem(OUTLINE_STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = data[key];
+                    }
+                });
+            }
+
+            // Try to load game info from proposal
+            const proposal = localStorage.getItem(PROPOSAL_STORAGE_KEY);
+            if (proposal) {
+                const proposalData = JSON.parse(proposal);
+                if (proposalData.gameTitle) {
+                    document.getElementById('outline-game').value = proposalData.gameTitle;
+                }
+            }
+        }
+
+        // Auto-save on input
+        document.addEventListener('input', function(e) {
+            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+                if (e.target.closest('.outline-field') || e.target.id === 'outline-game') {
+                    saveOutlineData();
+                }
+            }
+        });
+
+        // Save outline data
+        function saveOutlineData() {
+            const data = {};
+            document.querySelectorAll('.outline-field textarea, .outline-field input, #outline-game').forEach(field => {
+                if (field.id) {
+                    data[field.id] = field.value;
+                }
+            });
+            localStorage.setItem(OUTLINE_STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // Add visual to section
+        function addVisual(section) {
+            const container = document.getElementById(`${section}-visuals`);
+            const visualItem = document.createElement('div');
+            visualItem.className = 'visual-item';
+            visualItem.innerHTML = `
+                <input type="text" placeholder="Type of visual (e.g., 'Screenshot - Boss Arena')" class="visual-type">
+                <textarea placeholder="Where in the section? What does it demonstrate?"></textarea>
+                <button class="remove-visual-btn" onclick="this.parentElement.remove();">Remove</button>
+            `;
+            container.appendChild(visualItem);
+        }
+
+        // Add custom section
+        function addCustomSection() {
+            customSectionCount++;
+            const container = document.getElementById('custom-sections-container');
+            
+            const section = document.createElement('div');
+            section.className = 'section-builder';
+            section.id = `custom-${customSectionCount}`;
+            section.innerHTML = `
+                <div class="section-header">
+                    <h3>
+                        <span class="section-number">6+</span>
+                        <input type="text" placeholder="Section Title" style="border: none; padding: 0; font-size: 1.5rem; font-weight: 700; color: var(--color-text); width: 60%;" class="custom-title">
+                    </h3>
+                    <button class="button button-secondary button-small button-danger" onclick="document.getElementById('custom-${customSectionCount}').remove();">Remove</button>
+                </div>
+
+                <div class="outline-field">
+                    <label>Your Content</label>
+                    <textarea placeholder="Detailed notes, bullet points, analysis..." class="custom-content" style="min-height: 150px;"></textarea>
+                </div>
+
+                <div class="visuals-section">
+                    <h4>Visuals for This Section</h4>
+                    <div id="custom-${customSectionCount}-visuals"></div>
+                    <button class="add-visual-btn" onclick="addVisual('custom-${customSectionCount}')">+ Add Visual/Clip</button>
+                </div>
+            `;
+            
+            container.appendChild(section);
+        }
+
+        // Generate outline
+        function generateOutline() {
+            const gameTitle = document.getElementById('outline-game').value || 'Your Game';
+            
+            let outline = `REVIEW OUTLINE: ${gameTitle.toUpperCase()}
+================================================================================
+
+1. INTRODUCTION
+─────────────────────────────────────────────────────────────────────────────
+Your Hook & Core Argument:
+${document.getElementById('intro-argument').value || '[Your core thesis]'}
+
+Context You'll Establish:
+${document.getElementById('intro-context').value || '[Industry/design/cultural context]'}
+
+Opening Visuals:
+${getVisualsText('intro')}
+
+
+2. GAMEPLAY
+─────────────────────────────────────────────────────────────────────────────
+Core Mechanics:
+${document.getElementById('gameplay-mechanics').value || '[Specific mechanics]'}
+
+Challenge Design:
+${document.getElementById('gameplay-challenge').value || '[How difficulty is created]'}
+
+Representative Example:
+${document.getElementById('gameplay-example').value || '[Specific boss/level/sequence]'}
+
+Your Unique Take:
+${document.getElementById('gameplay-insight').value || '[Your original insight]'}
+
+Gameplay Visuals:
+${getVisualsText('gameplay')}
+
+
+3. GRAPHICS & ART DIRECTION
+─────────────────────────────────────────────────────────────────────────────
+Visual Language & Style:
+${document.getElementById('graphics-style').value || '[Aesthetic and palette]'}
+
+Purpose of Visual Choices:
+${document.getElementById('graphics-purpose').value || '[Why these choices]'}
+
+Visual Guidance:
+${document.getElementById('graphics-guidance').value || '[How visuals guide player]'}
+
+Specific Visual Moments:
+${document.getElementById('graphics-moments').value || '[Locations and scenes]'}
+
+Art Direction Visuals:
+${getVisualsText('graphics')}
+
+
+4. SOUND & AUDIO DESIGN
+─────────────────────────────────────────────────────────────────────────────
+Sonic Identity:
+${document.getElementById('sound-identity').value || '[Audio approach]'}
+
+How Audio Communicates:
+${document.getElementById('sound-communication').value || '[What sound tells player]'}
+
+Emotional Impact:
+${document.getElementById('sound-emotion').value || '[Emotional resonance]'}
+
+Specific Audio Moments:
+${document.getElementById('sound-moments').value || '[Key audio moments]'}
+
+Audio Demonstrations:
+${getVisualsText('sound')}
+
+
+5. VERDICT & RECOMMENDATION
+─────────────────────────────────────────────────────────────────────────────
+Core Thesis:
+${document.getElementById('verdict-thesis').value || '[One powerful sentence]'}
+
+Who It's For:
+${document.getElementById('verdict-audience').value || '[Specific player types]'}
+
+Who It's NOT For:
+${document.getElementById('verdict-limitations').value || '[Limitations]'}
+
+Broader Significance:
+${document.getElementById('verdict-significance').value || '[Why it matters]'}
+
+Final Line:
+${document.getElementById('verdict-closing').value || '[Memorable closing]'}
+
+Closing Visuals:
+${getVisualsText('verdict')}
+
+${getCustomSectionsText()}`;
+
+            document.getElementById('outlineContent').textContent = outline;
+            document.getElementById('outlineContainer').classList.add('visible');
+            document.getElementById('outlineContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            showNotification('Outline generated! Download or copy below.', 'success');
+        }
+
+        // Get visuals text
+        function getVisualsText(section) {
+            const container = document.getElementById(`${section}-visuals`);
+            if (!container) return '[Add visuals for this section]';
+            
+            const items = container.querySelectorAll('.visual-item');
+            if (items.length === 0) return '[Add visuals for this section]';
+            
+            let text = '';
+            items.forEach((item, index) => {
+                const inputs = item.querySelectorAll('input, textarea');
+                if (inputs.length >= 2) {
+                    const type = inputs[0].value || 'Visual';
+                    const desc = inputs[1].value || 'No description';
+                    text += `\n  ${index + 1}. ${type}\n     → ${desc}`;
+                }
+            });
+            return text;
+        }
+
+        // Get custom sections text
+        function getCustomSectionsText() {
+            const container = document.getElementById('custom-sections-container');
+            if (!container || !container.children.length) return '';
+            
+            let text = '\n\n';
+            Array.from(container.querySelectorAll('.section-builder')).forEach((section, index) => {
+                const titleInput = section.querySelector('.custom-title');
+                const contentTextarea = section.querySelector('.custom-content');
+                const title = titleInput.value || `Custom Section ${index + 1}`;
+                const content = contentTextarea.value || '[Content]';
+                
+                text += `${index + 6}. ${title.toUpperCase()}\n`;
+                text += '─────────────────────────────────────────────────────────────────────────────\n';
+                text += `${content}\n\n`;
+                text += getVisualsText(`custom-${section.id.split('-')[1]}`);
+                text += '\n\n';
+            });
+            return text;
+        }
+
+        // Copy to clipboard
+        function copyOutlineToClipboard() {
+            const text = document.getElementById('outlineContent').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Copied! Paste into Word or Google Docs.', 'success');
+            }).catch(() => {
+                showNotification('Copy failed. Try download instead.', 'error');
+            });
+        }
+
+        // Download outline
+        function downloadOutline() {
+            const gameTitle = document.getElementById('outline-game').value || 'review_outline';
+            const text = document.getElementById('outlineContent').textContent;
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `outline_${gameTitle.replace(/\s+/g, '_').toLowerCase()}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+            showNotification('Downloaded! Format in Word/Docs and submit through Canvas.', 'success');
+        }
+
+        // Clear outline data
+        function clearOutlineData() {
+            if (confirm('Clear all outline data? This cannot be undone.')) {
+                localStorage.removeItem(OUTLINE_STORAGE_KEY);
+                location.reload();
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 4000);
+        }
+
+        // Load on page load
+        window.addEventListener('load', loadOutlineData);
+    </script>
 </body>
 </html>
