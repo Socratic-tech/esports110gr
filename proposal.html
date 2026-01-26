@@ -163,6 +163,1166 @@
             margin: var(--spacing-xl) 0;
         }
 
+        .planner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .planner-header h2 {
+            margin: 0;
+        }
+
+        .data-status {
+            font-size: 0.9rem;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--color-background);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--color-accent);
+        }
+
+        .data-status.saved {
+            border-left-color: var(--color-success);
+            color: var(--color-success);
+        }
+
+        .data-status.unsaved {
+            border-left-color: var(--color-warning);
+            color: var(--color-warning);
+        }
+
+        .planner-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .planner-section h3 {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .planner-input {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .planner-input label {
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.95rem;
+        }
+
+        .planner-input input,
+        .planner-input textarea {
+            padding: var(--spacing-md);
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            background: var(--color-background);
+            transition: all var(--transition-normal);
+        }
+
+        .planner-input input:focus,
+        .planner-input textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-lighter);
+        }
+
+        .planner-input textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .planner-note {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            font-style: italic;
+            margin-top: var(--spacing-xs);
+        }
+
+        .planner-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .button-group-small {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .button-small {
+            padding: 0.625rem 1rem;
+            font-size: 0.9rem;
+            min-height: 40px;
+        }
+
+        .button-danger {
+            background-color: var(--color-error);
+            color: white;
+        }
+
+        .button-danger:hover {
+            background-color: #b91c1c;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: var(--spacing-md);
+            background: var(--color-background);
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--color-accent);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .checklist li:hover {
+            background: var(--color-surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checklist li.checked {
+            background: var(--color-primary-lighter);
+            border-left-color: var(--color-primary);
+        }
+
+        .checklist input {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist label {
+            flex-grow: 1;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checklist span {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Generated Overview */
+        .proposal-overview {
+            background: var(--color-background);
+            border: 2px solid var(--color-primary);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            margin-top: var(--spacing-xl);
+            display: none;
+        }
+
+        .proposal-overview.visible {
+            display: block;
+            animation: slideIn 300ms ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .overview-header {
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .overview-header h3 {
+            margin: 0;
+            color: var(--color-primary);
+        }
+
+        .overview-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .overview-section h4 {
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .overview-content {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--color-accent);
+            line-height: var(--line-height-relaxed);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .overview-empty {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            color: var(--color-text-lighter);
+            font-style: italic;
+        }
+
+        .overview-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+            flex-wrap: wrap;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .comparison-card {
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border: 2px solid var(--color-border);
+        }
+
+        .comparison-card.strong {
+            background: rgba(5, 150, 105, 0.05);
+            border-color: var(--color-success);
+        }
+
+        .comparison-card.weak {
+            background: rgba(217, 119, 6, 0.05);
+            border-color: var(--color-warning);
+        }
+
+        .comparison-label {
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .comparison-label.strong {
+            color: var(--color-success);
+        }
+
+        .comparison-label.weak {
+            color: var(--color-warning);
+        }
+
+        .comparison-label::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .notification {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--color-success);
+            color: white;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            animation: slideInNotification 300ms ease-in-out;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification.error {
+            background: var(--color-error);
+        }
+
+        @keyframes slideInNotification {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-tabs {
+                flex-direction: column;
+            }
+
+            .example-tab-btn {
+                width: 100%;
+            }
+
+            .accordion-trigger {
+                padding: var(--spacing-md);
+                font-size: 1rem;
+            }
+
+            .proposal-planner {
+                padding: var(--spacing-lg);
+            }
+
+            .planner-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .planner-buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <h1>Phase 0: Game Proposal</h1>
+            <p class="subtitle">Justify Your Game Choice Before Analysis</p>
+        </header>
+
+        <main class="main-content">
+            <section class="intro-section">
+                <p class="lead">Before you begin your detailed review, you'll write a brief proposal justifying which game you plan to analyze and why it's worth critical examination.</p>
+                <p>This isn't just a formality. Professionals in game journalism, academic research, and criticism always start by framing why a particular game matters—to the industry, to culture, to your argument.</p>
+            </section>
+
+            <section class="content-section">
+                <h2>Why This Matters</h2>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Demonstrates Intentionality</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You're not reviewing a game at random. You've chosen it because it reveals something meaningful about game design, industry trends, cultural impact, or artistic expression.</p>
+                                <p><strong>Example:</strong> "I'm not reviewing *Elden Ring* because it's popular. I'm analyzing its difficulty design philosophy and how it creates meaningful player agency through mechanical challenge."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Establishes Credibility</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You show that you understand the game's context—its place in the industry, its audience, its design philosophy, or its cultural significance.</p>
+                                <p><strong>Example:</strong> "This game arrived during a moment when accessibility in challenging games was being debated. That context shapes its significance."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Frames Your Analysis</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Your proposal tells readers (and yourself) what lens you'll use. Are you analyzing mechanical innovation? Cultural representation? Business impact? Artistic ambition?</p>
+                                <p><strong>Example:</strong> "My review focuses on *how the game teaches*, not whether it's fun."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Sets Realistic Scope</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>By proposing a game and an angle, you avoid trying to say everything about a game. Good analysis is focused.</p>
+                                <p><strong>Example:</strong> You can't analyze every aspect of *The Legend of Zelda: Breath of the Wild* in one review. But you can powerfully analyze its environmental puzzle design.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>What Makes a Game Worthy of Analysis?</h2>
+                <p>You don't need a AAA blockbuster or a critically acclaimed indie darling. A worthy game for review is one where:</p>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>You Can Engage Meaningfully With Its Design</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You've played it (or can access it), understand its mechanics, and can describe how it actually plays.</p>
+                                <p><strong>Strong choice:</strong> A game you've spent at least a few hours with and genuinely understand.</p>
+                                <p><strong>Weak choice:</strong> A game you've only watched on YouTube and don't fully grasp.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>It Offers Something to Examine</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>The game does something interesting—mechanically, narratively, artistically, or culturally—that's worth discussing.</p>
+                                <p><strong>Strong choice:</strong> A game with unique design, interesting story choices, or cultural significance.</p>
+                                <p><strong>Weak choice:</strong> A generic game with nothing distinctive to analyze.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>You Can Gather Evidence</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You can reference specific moments, systems, design choices, or industry context that support your claims.</p>
+                                <p><strong>Strong choice:</strong> "In the boss fight with [specific boss], the game teaches you [specific mechanic]."</p>
+                                <p><strong>Weak choice:</strong> "The game is really good and innovative."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>It Connects to Your Analytical Perspective</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You have something to say about it beyond "it's fun" or "it's bad."</p>
+                                <p><strong>Strong choice:</strong> "This game demonstrates how difficulty can be a narrative device."</p>
+                                <p><strong>Weak choice:</strong> "I liked this game."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Example Proposals</h2>
+                <p>Here are real proposal excerpts from professional reviewers and academics. Click to explore different approaches:</p>
+
+                <div class="example-proposals">
+                    <div class="example-tabs">
+                        <button class="example-tab-btn active" data-example="proposal1">Mechanical Deep Dive</button>
+                        <button class="example-tab-btn" data-example="proposal2">Cultural Context</button>
+                        <button class="example-tab-btn" data-example="proposal3">Narrative Innovation</button>
+                    </div>
+
+                    <div class="example-content active" id="proposal1">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> Hollow Knight (2017), Indie Action-Adventure Metroidvania</p>
+                            <p><strong>Justification:</strong> Hollow Knight represents a critical moment in indie game design where mechanical mastery became a viable path to critical and commercial success. Unlike contemporary indie games that relied on narrative charm or visual innovation, Hollow Knight achieved both critical acclaim and commercial success primarily through superior mechanical design.</p>
+                            <p><strong>Analytical Approach:</strong> My review will focus on how Hollow Knight's deliberately restrictive combat system (one attack, one dodge, one parry) creates a foundation for precisely calibrated difficulty curves. I'll examine specific boss encounters as case studies in how limitation breeds mastery, and argue that the game's success demonstrates that mechanical depth can be the primary artistic and commercial vehicle for indie games.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-content" id="proposal2">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> Control (2019), Remedy Entertainment</p>
+                            <p><strong>Justification:</strong> Control arrived in 2019 at a moment when AAA game narratives were increasingly questioned for thin storytelling despite massive budgets. Remedy instead invested heavily in environmental storytelling, document-based narrative, and cosmic horror worldbuilding—approaches traditionally reserved for indie games.</p>
+                            <p><strong>Context:</strong> Control's development coincided with broader industry conversations about what AAA games "should" do. By prioritizing narrative worldbuilding over cinematic setpieces, Remedy challenged AAA conventions.</p>
+                            <p><strong>Analytical Approach:</strong> I'll analyze how Control uses space, documents, and visual language to tell its story, arguing that narrative can emerge from environment rather than cutscenes. This approach has since influenced other AAA titles, making Control a pivotal example.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-content" id="proposal3">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> What Remains of Edith Finch (2017), Giant Sparrow</p>
+                            <p><strong>Justification:</strong> This game represents an evolution in how video games handle grief and memory. Rather than traditional narrative mechanics (dialogue, cutscenes), the game communicates emotion through interaction, camera movement, and environmental storytelling.</p>
+                            <p><strong>Context:</strong> In 2017, narrative games were still debated within the industry. What Remains of Edith Finch demonstrated that deeply emotional stories could be told through pure play and exploration.</p>
+                            <p><strong>Analytical Approach:</strong> My review will examine how game mechanics themselves become narrative devices. I'll look at specific sequences and show how the mechanics chosen for each family story communicate thematic meaning—how you interact becomes as important as what you see.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Proposal Generator</h2>
+                <p>Use this interactive tool to answer key questions. Your answers are saved locally as you type, and you can generate a formatted proposal outline to use for your Canvas draft.</p>
+
+                <div class="proposal-planner">
+                    <div class="planner-header">
+                        <h2 style="margin: 0;">Your Proposal Planner</h2>
+                        <div class="data-status unsaved" id="dataStatus">
+                            💾 Auto-saving to browser
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>Game Information</h3>
+                        <div class="planner-input">
+                            <label for="game-title">Game Title *</label>
+                            <input type="text" id="game-title" placeholder="e.g., Elden Ring">
+                            <p class="planner-note">Include the year if possible (e.g., "Elden Ring (2022)")</p>
+                        </div>
+
+                        <div class="planner-input">
+                            <label for="game-developer">Developer & Platform *</label>
+                            <input type="text" id="game-developer" placeholder="e.g., FromSoftware, PS5/PC/Xbox">
+                            <p class="planner-note">Who made it and where can people play it?</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>Why This Game?</h3>
+                        <div class="planner-input">
+                            <label for="justification">What makes this game worthy of analysis? *</label>
+                            <textarea id="justification" placeholder="What's unique or significant about this game? Why does it deserve critical attention? Don't just say 'it's good'—explain what it reveals about game design, culture, or the industry."></textarea>
+                            <p class="planner-note">2–3 sentences. Be specific about what makes this game interesting to analyze.</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>Context</h3>
+                        <div class="planner-input">
+                            <label for="context">What's the broader context? *</label>
+                            <textarea id="context" placeholder="When did it come out? What was happening in the industry? What design tradition does it belong to or challenge? How does it fit into gaming history or culture?"></textarea>
+                            <p class="planner-note">2–3 sentences. Show you understand this game's place in gaming history, industry, or culture.</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>Your Analysis Focus</h3>
+                        <div class="planner-input">
+                            <label for="focus">What will you analyze? *</label>
+                            <textarea id="focus" placeholder="Mechanics? Narrative? Art direction? Sound design? Cultural impact? Accessibility? Explain your analytical lens briefly."></textarea>
+                            <p class="planner-note">1–2 sentences. Be specific. You don't need to analyze everything.</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>References</h3>
+                        <div class="planner-input">
+                            <label for="references">What sources will you cite? *</label>
+                            <textarea id="references" placeholder="Professional reviews, developer interviews, academic articles, industry analysis. List 2-3 sources (with authors/publications if you have them)."></textarea>
+                            <p class="planner-note">Minimum 2-3 sources. These help you show you've done research.</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-buttons">
+                        <button class="button button-primary" id="generateBtn" onclick="generateOverview()">
+                            📄 Generate Proposal Overview
+                        </button>
+                        <button class="button button-secondary button-small" id="downloadBtn" onclick="downloadProposal()" style="display: none;">
+                            ⬇️ Download as Text
+                        </button>
+                        <button class="button button-secondary button-small" id="copyBtn" onclick="copyToClipboard()" style="display: none;">
+                            📋 Copy to Clipboard
+                        </button>
+                        <button class="button button-secondary button-small button-danger" id="clearBtn" onclick="clearAllData()">
+                            🗑️ Clear All Data
+                        </button>
+                    </div>
+
+                    <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: var(--spacing-lg);">
+                        ℹ️ <strong>Your Data:</strong> This tool saves your answers to your browser's local storage (offline, just on your device). No server, no account needed. <strong>Only you can see this.</strong> When you refresh, your data stays. You must copy your overview and paste it into Canvas for submission. Your instructor never sees this tool—they only see what you submit through Canvas.
+                    </p>
+                </div>
+
+                <!-- Generated Overview Section -->
+                <div class="proposal-overview" id="overviewContainer">
+                    <div class="overview-header">
+                        <h3>Your Proposal Overview</h3>
+                        <p style="margin: var(--spacing-sm) 0 0 0; color: var(--color-text-light);">
+                            Use this as the foundation for your Canvas proposal. Copy, refine, and submit through Canvas.
+                        </p>
+                    </div>
+
+                    <div class="overview-section">
+                        <h4>Game</h4>
+                        <div class="overview-content" id="overviewGame"></div>
+                    </div>
+
+                    <div class="overview-section">
+                        <h4>Why This Game Is Worthy of Analysis</h4>
+                        <div class="overview-content" id="overviewJustification"></div>
+                    </div>
+
+                    <div class="overview-section">
+                        <h4>Historical & Cultural Context</h4>
+                        <div class="overview-content" id="overviewContext"></div>
+                    </div>
+
+                    <div class="overview-section">
+                        <h4>Your Analytical Approach</h4>
+                        <div class="overview-content" id="overviewFocus"></div>
+                    </div>
+
+                    <div class="overview-section">
+                        <h4>References</h4>
+                        <div class="overview-content" id="overviewReferences"></div>
+                    </div>
+
+                    <div class="overview-actions">
+                        <button class="button button-primary" onclick="copyToClipboard()">
+                            📋 Copy to Clipboard
+                        </button>
+                        <button class="button button-secondary" onclick="downloadProposal()">
+                            ⬇️ Download as Text File
+                        </button>
+                        <button class="button button-secondary" onclick="document.getElementById('overviewContainer').classList.remove('visible')">
+                            ✕ Close Overview
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Required Components Checklist</h2>
+                <p>Make sure your proposal includes everything needed:</p>
+                
+                <ul class="checklist">
+                    <li>
+                        <input type="checkbox" id="check1">
+                        <label for="check1">
+                            Game Title & Information
+                            <span>Game name, developer, year, platform(s)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check2">
+                        <label for="check2">
+                            Justification & Relevance (1–2 paragraphs)
+                            <span>Why this game matters and why it's worthy of analysis</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check3">
+                        <label for="check3">
+                            Historical or Cultural Context (1 paragraph minimum)
+                            <span>Industry trends, cultural significance, design lineage, or audience context</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check4">
+                        <label for="check4">
+                            Your Analytical Approach (1 paragraph)
+                            <span>What will you focus on? Mechanics? Narrative? Visuals? Impact?</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check5">
+                        <label for="check5">
+                            References (minimum 2–3)
+                            <span>Professional reviews, interviews, academic articles, industry analysis</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="content-section">
+                <h2>Submission Expectations</h2>
+                
+                <div class="spec-block">
+                    <h3>Length</h3>
+                    <p>400–600 words (roughly 2–3 pages, single-spaced).</p>
+                </div>
+
+                <div class="spec-block">
+                    <h3>Format</h3>
+                    <p>Submit as a PDF, Word document, or Google Doc link through Canvas.</p>
+                </div>
+
+                <div class="spec-block">
+                    <h3>Style</h3>
+                    <p>Professional tone. Write as if you're pitching your game choice to a publication editor, not explaining it to a teacher. (Your instructor is reading as if they were that editor.)</p>
+                </div>
+
+                <div class="spec-block">
+                    <h3>How to Use This Tool</h3>
+                    <p><strong>Workflow:</strong></p>
+                    <ol style="margin: var(--spacing-md) 0; padding-left: 1.5rem;">
+                        <li>Answer questions in the planner above</li>
+                        <li>Click "Generate Proposal Overview"</li>
+                        <li>Copy or download the overview</li>
+                        <li>Paste into Word/Google Docs and refine</li>
+                        <li>Submit final proposal through Canvas</li>
+                    </ol>
+                    <p><strong>Your instructor will respond:</strong></p>
+                    <ul class="simple-list">
+                        <li><strong>Approved:</strong> Your game choice and approach are solid. Move forward with confidence.</li>
+                        <li><strong>Approved with feedback:</strong> Your proposal is approved, and here's guidance on refining your analytical angle.</li>
+                        <li><strong>Revision requested:</strong> We'd like to see a more developed proposal. Here's what to strengthen.</li>
+                    </ul>
+                    <p><strong>Important:</strong> You can begin the Training Quest while waiting for feedback. Learning how professional reviews work doesn't depend on your proposal being finalized.</p>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Tips for Success</h2>
+                <ul class="tips-list">
+                    <li><strong>Be specific, not vague.</strong> "I'm reviewing a popular game" → "I'm analyzing *Elden Ring*'s difficulty design philosophy and how it shapes player agency."</li>
+                    <li><strong>Show your research.</strong> Cite real sources. Show that you know the game's context.</li>
+                    <li><strong>Demonstrate playing.</strong> Reference specific moments or systems. Show that you understand how the game actually works.</li>
+                    <li><strong>Avoid defensiveness.</strong> Don't propose a game because you think you're "supposed to" like it or because it's popular. Propose a game you genuinely want to examine.</li>
+                    <li><strong>Use this tool as a scaffold.</strong> The generated overview is a starting point, not a final draft. Refine, rewrite, and improve it before submitting.</li>
+                </ul>
+            </section>
+
+            <section class="next-section">
+                <h2>What's Next?</h2>
+                <p>Once you understand the proposal expectations and have submitted your proposal through Canvas, move into the <strong>Training Quest</strong> to study how professional reviews work. You don't need to wait for approval—you can start learning while your proposal is being reviewed.</p>
+                <a href="quest.html" class="button button-primary">Begin Training Quest</a>
+            </section>
+
+            <footer class="page-footer">
+                <p><em>Canvas is your submission system.</em> This page helps you plan and scaffold your thinking. Your browser saves your answers locally (you can see them every time you return). Generate an overview, copy it, and submit your actual proposal through Canvas, where your instructor can give you feedback.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'esports110_proposal';
+
+        // Load data on page load
+        function loadData() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('game-title').value = data.gameTitle || '';
+                document.getElementById('game-developer').value = data.gameDeveloper || '';
+                document.getElementById('justification').value = data.justification || '';
+                document.getElementById('context').value = data.context || '';
+                document.getElementById('focus').value = data.focus || '';
+                document.getElementById('references').value = data.references || '';
+                updateDataStatus(true);
+            }
+        }
+
+        // Save data on input
+        function saveData() {
+            const data = {
+                gameTitle: document.getElementById('game-title').value,
+                gameDeveloper: document.getElementById('game-developer').value,
+                justification: document.getElementById('justification').value,
+                context: document.getElementById('context').value,
+                focus: document.getElementById('focus').value,
+                references: document.getElementById('references').value
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            updateDataStatus(true);
+        }
+
+        // Update data status indicator
+        function updateDataStatus(isSaved) {
+            const status = document.getElementById('dataStatus');
+            if (isSaved) {
+                status.textContent = '✓ Saved to browser';
+                status.classList.remove('unsaved');
+                status.classList.add('saved');
+            } else {
+                status.textContent = '⚠ Unsaved changes';
+                status.classList.remove('saved');
+                status.classList.add('unsaved');
+            }
+        }
+
+        // Generate proposal overview
+        function generateOverview() {
+            const gameTitle = document.getElementById('game-title').value.trim();
+            const gameDeveloper = document.getElementById('game-developer').value.trim();
+            const justification = document.getElementById('justification').value.trim();
+            const context = document.getElementById('context').value.trim();
+            const focus = document.getElementById('focus').value.trim();
+            const references = document.getElementById('references').value.trim();
+
+            // Check required fields
+            if (!gameTitle || !justification || !context || !focus || !references) {
+                showNotification('Please fill in all required fields before generating.', 'error');
+                return;
+            }
+
+            // Generate overview
+            document.getElementById('overviewGame').textContent = 
+                gameTitle + (gameDeveloper ? '\n' + gameDeveloper : '');
+            document.getElementById('overviewJustification').textContent = justification;
+            document.getElementById('overviewContext').textContent = context;
+            document.getElementById('overviewFocus').textContent = focus;
+            document.getElementById('overviewReferences').textContent = references;
+
+            // Show overview container
+            const container = document.getElementById('overviewContainer');
+            container.classList.add('visible');
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // Show copy/download buttons
+            document.getElementById('downloadBtn').style.display = 'inline-block';
+            document.getElementById('copyBtn').style.display = 'inline-block';
+
+            showNotification('Proposal overview generated! Copy it to Canvas.', 'success');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const gameTitle = document.getElementById('game-title').value.trim();
+            const gameDeveloper = document.getElementById('game-developer').value.trim();
+            const justification = document.getElementById('justification').value.trim();
+            const context = document.getElementById('context').value.trim();
+            const focus = document.getElementById('focus').value.trim();
+            const references = document.getElementById('references').value.trim();
+
+            const text = `GAME PROPOSAL
+=====================================
+
+GAME:
+${gameTitle}
+${gameDeveloper}
+
+WHY THIS GAME IS WORTHY OF ANALYSIS:
+${justification}
+
+HISTORICAL & CULTURAL CONTEXT:
+${context}
+
+YOUR ANALYTICAL APPROACH:
+${focus}
+
+REFERENCES:
+${references}`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Copied to clipboard! Paste into your Canvas submission.', 'success');
+            }).catch(err => {
+                showNotification('Failed to copy. Try the download button instead.', 'error');
+            });
+        }
+
+        // Download as text file
+        function downloadProposal() {
+            const gameTitle = document.getElementById('game-title').value.trim();
+            const gameDeveloper = document.getElementById('game-developer').value.trim();
+            const justification = document.getElementById('justification').value.trim();
+            const context = document.getElementById('context').value.trim();
+            const focus = document.getElementById('focus').value.trim();
+            const references = document.getElementById('references').value.trim();
+
+            const text = `GAME PROPOSAL
+=====================================
+
+GAME:
+${gameTitle}
+${gameDeveloper}
+
+WHY THIS GAME IS WORTHY OF ANALYSIS:
+${justification}
+
+HISTORICAL & CULTURAL CONTEXT:
+${context}
+
+YOUR ANALYTICAL APPROACH:
+${focus}
+
+REFERENCES:
+${references}`;
+
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `proposal_${gameTitle.replace(/\s+/g, '_').toLowerCase()}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            showNotification('File downloaded! Open it, refine it, and submit to Canvas.', 'success');
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure? This will delete all your saved answers.')) {
+                localStorage.removeItem(STORAGE_KEY);
+                document.getElementById('game-title').value = '';
+                document.getElementById('game-developer').value = '';
+                document.getElementById('justification').value = '';
+                document.getElementById('context').value = '';
+                document.getElementById('focus').value = '';
+                document.getElementById('references').value = '';
+                document.getElementById('overviewContainer').classList.remove('visible');
+                updateDataStatus(false);
+                showNotification('All data cleared.', 'success');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Add event listeners for auto-save
+        ['game-title', 'game-developer', 'justification', 'context', 'focus', 'references'].forEach(id => {
+            document.getElementById(id).addEventListener('input', saveData);
+        });
+
+        // Accordion functionality
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const item = this.closest('.accordion-item');
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.accordion-item').forEach(other => {
+                    other.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Example proposal tabs
+        document.querySelectorAll('.example-tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const exampleId = this.getAttribute('data-example');
+                
+                document.querySelectorAll('.example-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.example-content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                document.getElementById(exampleId).classList.add('active');
+            });
+        });
+
+        // Checklist functionality
+        document.querySelectorAll('.checklist input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const listItem = this.closest('li');
+                if (this.checked) {
+                    listItem.classList.add('checked');
+                } else {
+                    listItem.classList.remove('checked');
+                }
+            });
+        });
+
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    const checkbox = this.querySelector('input');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+
+        // Load data on page load
+        window.addEventListener('load', loadData);
+    </script>
+</body>
+</html>
+
+        /* Proposal-specific styles */
+        .accordion {
+            margin: var(--spacing-lg) 0;
+        }
+
+        .accordion-item {
+            margin-bottom: var(--spacing-md);
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .accordion-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .accordion-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 100%);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text);
+            transition: all var(--transition-normal);
+            text-align: left;
+        }
+
+        .accordion-trigger:hover {
+            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-surface) 100%);
+            color: var(--color-primary);
+        }
+
+        .accordion-trigger:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .accordion-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            margin-left: var(--spacing-md);
+            transition: transform var(--transition-normal);
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-slow);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+            background: var(--color-background);
+        }
+
+        /* Example proposals */
+        .example-proposals {
+            margin: var(--spacing-xl) 0;
+        }
+
+        .example-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .example-tab-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            font-size: 0.95rem;
+        }
+
+        .example-tab-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-lighter);
+            color: var(--color-primary);
+        }
+
+        .example-tab-btn.active {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+            color: white;
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-content {
+            display: none;
+            animation: fadeInContent 250ms ease-in-out;
+        }
+
+        .example-content.active {
+            display: block;
+        }
+
+        .example-box {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-xl);
+            border: 1px solid var(--color-border);
+        }
+
+        .example-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--color-primary);
+            color: white;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-label.good {
+            background: var(--color-success);
+        }
+
+        .example-label.weak {
+            background: var(--color-warning);
+        }
+
+        .proposal-planner {
+            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-secondary-light) 100%);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-xl);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            margin: var(--spacing-xl) 0;
+        }
+
         .planner-section {
             margin-bottom: var(--spacing-lg);
         }
