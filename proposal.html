@@ -6,13 +6,366 @@
     <title>Game Proposal – ESPORTS 110</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/layout.css">
+    <style>
+        /* Proposal-specific styles */
+        .accordion {
+            margin: var(--spacing-lg) 0;
+        }
+
+        .accordion-item {
+            margin-bottom: var(--spacing-md);
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .accordion-item:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .accordion-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-background) 100%);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text);
+            transition: all var(--transition-normal);
+            text-align: left;
+        }
+
+        .accordion-trigger:hover {
+            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-surface) 100%);
+            color: var(--color-primary);
+        }
+
+        .accordion-trigger:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        .accordion-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            margin-left: var(--spacing-md);
+            transition: transform var(--transition-normal);
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-slow);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 2000px;
+        }
+
+        .accordion-body {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+            background: var(--color-background);
+        }
+
+        /* Example proposals */
+        .example-proposals {
+            margin: var(--spacing-xl) 0;
+        }
+
+        .example-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .example-tab-btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            font-size: 0.95rem;
+        }
+
+        .example-tab-btn:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-lighter);
+            color: var(--color-primary);
+        }
+
+        .example-tab-btn.active {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1e40af 100%);
+            color: white;
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .example-content {
+            display: none;
+            animation: fadeInContent 250ms ease-in-out;
+        }
+
+        .example-content.active {
+            display: block;
+        }
+
+        .example-box {
+            background: var(--color-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-xl);
+            border: 1px solid var(--color-border);
+        }
+
+        .example-label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--color-primary);
+            color: white;
+            border-radius: var(--border-radius);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .example-label.good {
+            background: var(--color-success);
+        }
+
+        .example-label.weak {
+            background: var(--color-warning);
+        }
+
+        .proposal-planner {
+            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-secondary-light) 100%);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-xl);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .planner-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .planner-section h3 {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .planner-input {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .planner-input label {
+            font-weight: 600;
+            color: var(--color-text);
+            font-size: 0.95rem;
+        }
+
+        .planner-input input,
+        .planner-input textarea {
+            padding: var(--spacing-md);
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--border-radius-lg);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+        }
+
+        .planner-input textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .planner-note {
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            font-style: italic;
+            margin-top: var(--spacing-xs);
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: var(--spacing-md);
+            background: var(--color-background);
+            margin-bottom: var(--spacing-sm);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--color-accent);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .checklist li:hover {
+            background: var(--color-surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .checklist li.checked {
+            background: var(--color-primary-lighter);
+            border-left-color: var(--color-primary);
+        }
+
+        .checklist input {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checklist label {
+            flex-grow: 1;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checklist span {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+            margin-top: var(--spacing-xs);
+        }
+
+        .tooltip-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: help;
+            margin-left: var(--spacing-xs);
+            position: relative;
+        }
+
+        .tooltip-icon:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-text);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-lg);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            margin-bottom: var(--spacing-sm);
+            z-index: 1000;
+            font-weight: 400;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .comparison-card {
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border: 2px solid var(--color-border);
+        }
+
+        .comparison-card.strong {
+            background: rgba(5, 150, 105, 0.05);
+            border-color: var(--color-success);
+        }
+
+        .comparison-card.weak {
+            background: rgba(217, 119, 6, 0.05);
+            border-color: var(--color-warning);
+        }
+
+        .comparison-label {
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .comparison-label.strong {
+            color: var(--color-success);
+        }
+
+        .comparison-label.weak {
+            color: var(--color-warning);
+        }
+
+        .comparison-label::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-tabs {
+                flex-direction: column;
+            }
+
+            .example-tab-btn {
+                width: 100%;
+            }
+
+            .accordion-trigger {
+                padding: var(--spacing-md);
+                font-size: 1rem;
+            }
+
+            .proposal-planner {
+                padding: var(--spacing-lg);
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <header class="page-header">
             <a href="index.html" class="back-link">← Back to Home</a>
             <h1>Phase 0: Game Proposal</h1>
-            <p class="subtitle">Justifying Your Game Choice Before Analysis</p>
+            <p class="subtitle">Justify Your Game Choice Before Analysis</p>
         </header>
 
         <main class="main-content">
@@ -23,76 +376,262 @@
 
             <section class="content-section">
                 <h2>Why This Matters</h2>
-                <p>A game proposal does several things:</p>
-                <ul class="structured-list">
-                    <li><strong>Demonstrates intentionality.</strong> You're not reviewing a game at random. You've chosen it because it reveals something meaningful about game design, industry trends, cultural impact, or artistic expression.</li>
-                    <li><strong>Establishes credibility.</strong> You show that you understand the game's context—its place in the industry, its audience, its design philosophy, or its cultural significance.</li>
-                    <li><strong>Frames your analysis.</strong> Your proposal tells readers (and yourself) what lens you'll use. Are you analyzing mechanical innovation? Cultural representation? Business impact? Artistic ambition?</li>
-                    <li><strong>Sets realistic scope.</strong> By proposing a game and an angle, you avoid trying to say everything about a game. Good analysis is focused.</li>
-                </ul>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Demonstrates Intentionality</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You're not reviewing a game at random. You've chosen it because it reveals something meaningful about game design, industry trends, cultural impact, or artistic expression.</p>
+                                <p><strong>Example:</strong> "I'm not reviewing *Elden Ring* because it's popular. I'm analyzing its difficulty design philosophy and how it creates meaningful player agency through mechanical challenge."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Establishes Credibility</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You show that you understand the game's context—its place in the industry, its audience, its design philosophy, or its cultural significance.</p>
+                                <p><strong>Example:</strong> "This game arrived during a moment when accessibility in challenging games was being debated. That context shapes its significance."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Frames Your Analysis</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>Your proposal tells readers (and yourself) what lens you'll use. Are you analyzing mechanical innovation? Cultural representation? Business impact? Artistic ambition?</p>
+                                <p><strong>Example:</strong> "My review focuses on *how the game teaches*, not whether it's fun."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>Sets Realistic Scope</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>By proposing a game and an angle, you avoid trying to say everything about a game. Good analysis is focused.</p>
+                                <p><strong>Example:</strong> You can't analyze every aspect of *The Legend of Zelda: Breath of the Wild* in one review. But you can powerfully analyze its environmental puzzle design.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="content-section">
-                <h2>What Makes a Game "Worthy of Analysis"?</h2>
+                <h2>What Makes a Game Worthy of Analysis?</h2>
                 <p>You don't need a AAA blockbuster or a critically acclaimed indie darling. A worthy game for review is one where:</p>
-                <ul class="structured-list">
-                    <li><strong>You can engage meaningfully with its design.</strong> You've played it (or can access it), understand its mechanics, and can describe how it actually plays.</li>
-                    <li><strong>It offers something to examine.</strong> The game does something interesting—mechanically, narratively, artistically, or culturally—that's worth discussing.</li>
-                    <li><strong>You can gather evidence.</strong> You can reference specific moments, systems, design choices, or industry context that support your claims.</li>
-                    <li><strong>It connects to your analytical perspective.</strong> You have something to say about it beyond "it's fun" or "it's bad."</li>
-                </ul>
-                <p><em>Examples:</em> A challenging indie platformer that reimagines movement. A narrative game that takes risks. A competitive esports title with interesting meta shifts. A mobile game that bridges accessibility and depth. A game that sparked controversy. A remake that recontextualizes the original. A title that influenced your understanding of game design.</p>
+                
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>You Can Engage Meaningfully With Its Design</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You've played it (or can access it), understand its mechanics, and can describe how it actually plays.</p>
+                                <p><strong>Strong choice:</strong> A game you've spent at least a few hours with and genuinely understand.</p>
+                                <p><strong>Weak choice:</strong> A game you've only watched on YouTube and don't fully grasp.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>It Offers Something to Examine</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>The game does something interesting—mechanically, narratively, artistically, or culturally—that's worth discussing.</p>
+                                <p><strong>Strong choice:</strong> A game with unique design, interesting story choices, or cultural significance.</p>
+                                <p><strong>Weak choice:</strong> A generic game with nothing distinctive to analyze.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>You Can Gather Evidence</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You can reference specific moments, systems, design choices, or industry context that support your claims.</p>
+                                <p><strong>Strong choice:</strong> "In the boss fight with [specific boss], the game teaches you [specific mechanic]."</p>
+                                <p><strong>Weak choice:</strong> "The game is really good and innovative."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-item">
+                        <button class="accordion-trigger">
+                            <span>It Connects to Your Analytical Perspective</span>
+                            <span class="accordion-icon">▼</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="accordion-body">
+                                <p>You have something to say about it beyond "it's fun" or "it's bad."</p>
+                                <p><strong>Strong choice:</strong> "This game demonstrates how difficulty can be a narrative device."</p>
+                                <p><strong>Weak choice:</strong> "I liked this game."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2>Example Proposals</h2>
+                <p>Here are real proposal excerpts from professional reviewers and academics. Click to explore different approaches:</p>
+
+                <div class="example-proposals">
+                    <div class="example-tabs">
+                        <button class="example-tab-btn active" data-example="proposal1">Mechanical Deep Dive</button>
+                        <button class="example-tab-btn" data-example="proposal2">Cultural Context</button>
+                        <button class="example-tab-btn" data-example="proposal3">Narrative Innovation</button>
+                    </div>
+
+                    <div class="example-content active" id="proposal1">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> Hollow Knight (2017), Indie Action-Adventure Metroidvania</p>
+                            <p><strong>Justification:</strong> Hollow Knight represents a critical moment in indie game design where mechanical mastery became a viable path to critical and commercial success. Unlike contemporary indie games that relied on narrative charm or visual innovation, Hollow Knight achieved both critical acclaim and commercial success primarily through superior mechanical design.</p>
+                            <p><strong>Analytical Approach:</strong> My review will focus on how Hollow Knight's deliberately restrictive combat system (one attack, one dodge, one parry) creates a foundation for precisely calibrated difficulty curves. I'll examine specific boss encounters as case studies in how limitation breeds mastery, and argue that the game's success demonstrates that mechanical depth can be the primary artistic and commercial vehicle for indie games.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-content" id="proposal2">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> Control (2019), Remedy Entertainment</p>
+                            <p><strong>Justification:</strong> Control arrived in 2019 at a moment when AAA game narratives were increasingly questioned for thin storytelling despite massive budgets. Remedy instead invested heavily in environmental storytelling, document-based narrative, and cosmic horror worldbuilding—approaches traditionally reserved for indie games.</p>
+                            <p><strong>Context:</strong> Control's development coincided with broader industry conversations about what AAA games "should" do. By prioritizing narrative worldbuilding over cinematic setpieces, Remedy challenged AAA conventions.</p>
+                            <p><strong>Analytical Approach:</strong> I'll analyze how Control uses space, documents, and visual language to tell its story, arguing that narrative can emerge from environment rather than cutscenes. This approach has since influenced other AAA titles, making Control a pivotal example.</p>
+                        </div>
+                    </div>
+
+                    <div class="example-content" id="proposal3">
+                        <div class="example-box">
+                            <span class="example-label good">Strong Proposal</span>
+                            <p><strong>Game:</strong> What Remains of Edith Finch (2017), Giant Sparrow</p>
+                            <p><strong>Justification:</strong> This game represents an evolution in how video games handle grief and memory. Rather than traditional narrative mechanics (dialogue, cutscenes), the game communicates emotion through interaction, camera movement, and environmental storytelling.</p>
+                            <p><strong>Context:</strong> In 2017, narrative games were still debated within the industry. What Remains of Edith Finch demonstrated that deeply emotional stories could be told through pure play and exploration.</p>
+                            <p><strong>Analytical Approach:</strong> My review will examine how game mechanics themselves become narrative devices. I'll look at specific sequences and show how the mechanics chosen for each family story communicate thematic meaning—how you interact becomes as important as what you see.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="content-section">
                 <h2>Required Components</h2>
+                <p>Use this interactive checklist to ensure your proposal includes everything needed:</p>
                 
-                <div class="requirement">
-                    <h3>1. Game Title & Basic Information</h3>
-                    <p>Name, developer, release year, platform(s), and genre.</p>
-                </div>
+                <ul class="checklist">
+                    <li>
+                        <input type="checkbox" id="check1">
+                        <label for="check1">
+                            Game Title & Information
+                            <span>Developer, release year, platform(s), genre</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check2">
+                        <label for="check2">
+                            Justification & Relevance (1–2 paragraphs)
+                            <span>Why this game matters and why it's worthy of analysis</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check3">
+                        <label for="check3">
+                            Historical or Cultural Context (1 paragraph minimum)
+                            <span>Industry trends, cultural significance, design lineage, or audience context</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check4">
+                        <label for="check4">
+                            Your Analytical Approach (1 paragraph)
+                            <span>What will you focus on? Mechanics? Narrative? Visuals? Impact?</span>
+                        </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="check5">
+                        <label for="check5">
+                            References (minimum 2–3)
+                            <span>Professional reviews, interviews, academic articles, industry analysis</span>
+                        </label>
+                    </li>
+                </ul>
+            </section>
 
-                <div class="requirement">
-                    <h3>2. Justification & Relevance (1–2 paragraphs)</h3>
-                    <p>Why did you choose this game? What makes it worthy of professional analysis? What aspect of game design, culture, or industry does it illuminate?</p>
-                </div>
+            <section class="content-section">
+                <h2>Proposal Planner</h2>
+                <p>Use this interactive tool to outline your thinking before writing. Your notes stay private—submit your actual proposal through Canvas.</p>
 
-                <div class="requirement">
-                    <h3>3. Historical or Cultural Context (1 paragraph minimum)</h3>
-                    <p>Position your game within a broader context:</p>
-                    <ul class="nested-list">
-                        <li><strong>Industry context:</strong> What was happening in the industry when it launched? What trends does it follow or challenge?</li>
-                        <li><strong>Cultural context:</strong> How does it reflect or influence broader culture? Does it engage with representation, politics, or social commentary?</li>
-                        <li><strong>Design context:</strong> What design lineage does it belong to? What conventions does it follow or subvert?</li>
-                        <li><strong>Audience context:</strong> Who plays this game? Why? What does that tell us?</li>
-                    </ul>
-                </div>
+                <div class="proposal-planner">
+                    <div class="planner-section">
+                        <h3>Game Information</h3>
+                        <div class="planner-input">
+                            <label for="game-title">Game Title *</label>
+                            <input type="text" id="game-title" placeholder="e.g., Elden Ring">
+                            <p class="planner-note">Include the year and developer</p>
+                        </div>
+                    </div>
 
-                <div class="requirement">
-                    <h3>4. Your Analytical Approach (1 paragraph)</h3>
-                    <p>Preview how you'll analyze this game. What will you focus on?</p>
-                    <ul class="nested-list">
-                        <li>Mechanical depth and challenge design?</li>
-                        <li>Narrative structure and storytelling?</li>
-                        <li>Art direction and visual language?</li>
-                        <li>Sound design and audio worldbuilding?</li>
-                        <li>Cultural or industry significance?</li>
-                        <li>Accessibility and design philosophy?</li>
-                        <li>A combination of these?</li>
-                    </ul>
-                </div>
+                    <div class="planner-section">
+                        <h3>Why This Game?</h3>
+                        <div class="planner-input">
+                            <label for="justification">What makes this game worthy of analysis? *</label>
+                            <textarea id="justification" placeholder="What's unique or significant about this game? Why does it deserve critical attention?"></textarea>
+                            <p class="planner-note">Don't just say "it's good." Explain what it reveals or does that's interesting.</p>
+                        </div>
+                    </div>
 
-                <div class="requirement">
-                    <h3>5. References (minimum 2–3)</h3>
-                    <p>Include sources that informed your proposal. These might be:</p>
-                    <ul class="nested-list">
-                        <li>Professional reviews or coverage</li>
-                        <li>Developer interviews or postmortems</li>
-                        <li>Academic articles about the game or its genre</li>
-                        <li>Industry analysis or trend reports</li>
-                        <li>Cultural criticism or commentary</li>
-                    </ul>
-                    <p>Use standard citation format (APA, MLA, or Chicago—check your syllabus).</p>
+                    <div class="planner-section">
+                        <h3>Context</h3>
+                        <div class="planner-input">
+                            <label for="context">What's the broader context? *</label>
+                            <textarea id="context" placeholder="When did it come out? What was happening in the industry? What design tradition does it belong to or challenge?"></textarea>
+                            <p class="planner-note">Show you understand the game's place in history, industry, or culture</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>Your Analysis Focus</h3>
+                        <div class="planner-input">
+                            <label for="focus">What will you analyze? *</label>
+                            <textarea id="focus" placeholder="Will you focus on mechanics? Narrative? Art direction? Cultural impact? Accessibility? All of these?"></textarea>
+                            <p class="planner-note">Be specific. You don't need to analyze everything—focus on what you can say powerfully.</p>
+                        </div>
+                    </div>
+
+                    <div class="planner-section">
+                        <h3>References</h3>
+                        <div class="planner-input">
+                            <label for="references">What sources will you cite? *</label>
+                            <textarea id="references" placeholder="Professional reviews, developer interviews, academic articles, industry analysis. List 2-3 you've found so far."></textarea>
+                            <p class="planner-note">These help you show you've done research</p>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--color-text-light); font-size: 0.95rem; margin-top: var(--spacing-xl);">
+                        ℹ️ <strong>Note:</strong> This tool helps you think through your proposal. Your actual proposal gets submitted through Canvas, where your instructor can give feedback.
+                    </p>
                 </div>
             </section>
 
@@ -117,7 +656,7 @@
                 <div class="spec-block">
                     <h3>Instructor Feedback</h3>
                     <p>Your instructor will respond with one of the following:</p>
-                    <ul class="nested-list">
+                    <ul class="simple-list">
                         <li><strong>Approved:</strong> Your game choice and approach are solid. Move forward with confidence.</li>
                         <li><strong>Approved with feedback:</strong> Your proposal is approved, and here's guidance on refining your analytical angle.</li>
                         <li><strong>Revision requested:</strong> We'd like to see a more developed proposal. Here's what to strengthen.</li>
@@ -144,9 +683,68 @@
             </section>
 
             <footer class="page-footer">
-                <p><em>Canvas is your submission system.</em> This page is a guide. Submit your actual proposal through Canvas, where your instructor can give you feedback.</p>
+                <p><em>Canvas is your submission system.</em> This page helps you think through your proposal. Submit your actual proposal through Canvas, where your instructor can give you feedback.</p>
             </footer>
         </main>
     </div>
+
+    <script>
+        // Accordion functionality
+        document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const item = this.closest('.accordion-item');
+                const isActive = item.classList.contains('active');
+                
+                // Close all other accordion items
+                document.querySelectorAll('.accordion-item').forEach(other => {
+                    other.classList.remove('active');
+                });
+                
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Example proposal tabs
+        document.querySelectorAll('.example-tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const exampleId = this.getAttribute('data-example');
+                
+                // Remove active from all buttons and content
+                document.querySelectorAll('.example-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.example-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active to clicked button and corresponding content
+                this.classList.add('active');
+                document.getElementById(exampleId).classList.add('active');
+            });
+        });
+
+        // Checklist functionality
+        document.querySelectorAll('.checklist input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const listItem = this.closest('li');
+                if (this.checked) {
+                    listItem.classList.add('checked');
+                } else {
+                    listItem.classList.remove('checked');
+                }
+            });
+        });
+
+        // Make checklist items clickable
+        document.querySelectorAll('.checklist li').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.tagName !== 'INPUT') {
+                    const checkbox = this.querySelector('input');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+
