@@ -4,7 +4,7 @@
 class GameReviewQuest {
     constructor() {
         this.currentSection = 'introduction';
-        this.currentTab = 'model'; // model, explain, or practice
+        this.currentTab = 'example'; // example, weak, explain, or practice
         this.init();
     }
 
@@ -61,10 +61,19 @@ class GameReviewQuest {
         const tabList = document.createElement('div');
         tabList.className = 'tab-list';
 
-        ['model', 'explain', 'practice'].forEach(tabName => {
+        const tabs = ['example', 'weak', 'explain', 'practice'];
+        
+        tabs.forEach(tabName => {
             const tab = document.createElement('button');
             tab.className = `tab-button ${tabName === this.currentTab ? 'active' : ''}`;
-            tab.textContent = this.formatTabName(tabName);
+            
+            let displayName = tabName;
+            if (tabName === 'example') displayName = '✓ Strong Examples';
+            if (tabName === 'weak') displayName = '✗ What NOT to Do';
+            if (tabName === 'explain') displayName = 'Explanation';
+            if (tabName === 'practice') displayName = 'Practice';
+            
+            tab.textContent = displayName;
             tab.setAttribute('data-tab', tabName);
             
             tab.addEventListener('click', () => {
@@ -82,27 +91,41 @@ class GameReviewQuest {
 
     renderTabContent(section) {
         const contentContainer = document.getElementById('section-content');
-        const tabData = section[this.currentTab];
+        let html = '<div class="tab-pane active">';
 
-        contentContainer.innerHTML = `
-            <div class="tab-pane active">
-                <h3>${tabData.title}</h3>
-                ${tabData.content}
-            </div>
-        `;
-
-        // Add source attribution if model
-        if (this.currentTab === 'model' && tabData.source) {
-            const source = document.createElement('p');
-            source.className = 'source-attribution';
-            source.innerHTML = `<em>Source: ${tabData.source}</em>`;
-            contentContainer.appendChild(source);
+        if (this.currentTab === 'example') {
+            // Show both goodExample and goodExample2
+            if (section.goodExample) {
+                html += `<h3>${section.goodExample.title}</h3>${section.goodExample.content}`;
+            }
+            if (section.goodExample2) {
+                html += `<hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--color-border);">`;
+                html += `<h3>${section.goodExample2.title}</h3>${section.goodExample2.content}`;
+            }
+        } else if (this.currentTab === 'weak') {
+            // Show weakExample
+            if (section.weakExample) {
+                html += `<h3>${section.weakExample.title}</h3>${section.weakExample.content}`;
+            }
+        } else if (this.currentTab === 'explain') {
+            // Show explain
+            if (section.explain) {
+                html += `<h3>${section.explain.title}</h3>${section.explain.content}`;
+            }
+        } else if (this.currentTab === 'practice') {
+            // Show practice
+            if (section.practice) {
+                html += `<h3>${section.practice.title}</h3>${section.practice.content}`;
+            }
         }
+
+        html += '</div>';
+        contentContainer.innerHTML = html;
     }
 
     setSection(sectionId) {
         this.currentSection = sectionId;
-        this.currentTab = 'model'; // Reset to model when changing sections
+        this.currentTab = 'example'; // Reset to example when changing sections
         this.renderNav();
         this.renderContent();
         
