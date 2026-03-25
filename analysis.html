@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3: Critical Analysis – ESPORTS 110</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <style>
+    /* ── Layout shell (mirrors quest layout) ── */
+    .analysis-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .analysis-header {
+      background: var(--color-primary);
+      color: white;
+      padding: var(--spacing-lg) var(--spacing-xl);
+    }
+
+    .analysis-header .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .analysis-header .back-link {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: block;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .analysis-header .back-link:hover { color: white; }
+
+    .analysis-header h1 {
+      margin: 0 0 var(--spacing-xs) 0;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    .analysis-header .subtitle {
+      margin: 0;
+      opacity: 0.85;
+      font-size: 1rem;
+    }
+
+    .analysis-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      gap: 0;
+      padding: var(--spacing-lg) var(--spacing-xl);
+    }
+
+    /* ── Sidebar ── */
+    .analysis-sidebar {
+      padding-right: var(--spacing-xl);
+      border-right: 1px solid var(--color-border);
+      padding-top: var(--spacing-lg);
+    }
+
+    .sidebar-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-light);
+      margin: 0 0 var(--spacing-md) 0;
+    }
+
+    .lens-nav-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: none;
+      border: none;
+      border-radius: var(--border-radius-lg);
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--color-text);
+      transition: all var(--transition-normal);
+      margin-bottom: var(--spacing-xs);
+      border: 1.5px solid transparent;
+    }
+
+    .lens-nav-item:hover {
+      background: var(--color-surface);
+      border-color: var(--color-border);
+    }
+
+    .lens-nav-item.active {
+      background: var(--color-primary-lighter);
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .lens-nav-item .lens-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-surface);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 24px;
+      margin-right: var(--spacing-sm);
+      color: var(--color-text-light);
+      border: 1.5px solid var(--color-border);
+    }
+
+    .lens-nav-item.active .lens-icon {
+      background: var(--color-primary);
+      color: white;
+      border-color: var(--color-primary);
+    }
+
+    .sidebar-section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-text-light);
+      margin: var(--spacing-lg) 0 var(--spacing-sm) 0;
+      padding-left: var(--spacing-md);
+    }
+
+    .sidebar-footer {
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .sidebar-note {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      line-height: 1.6;
+    }
+
+    /* ── Main content area ── */
+    .analysis-main {
+      padding-left: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+    }
+
+    .lens-panel { display: none; }
+    .lens-panel.active { display: block; }
+
+    .lens-title-bar {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--color-primary);
+    }
+
+    .lens-badge {
+      width: 48px;
+      height: 48px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .lens-title-bar h2 {
+      margin: 0 0 var(--spacing-xs) 0;
+      font-size: 1.5rem;
+    }
+
+    .lens-title-bar p {
+      margin: 0;
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+    }
+
+    /* ── Tabs (mirrors quest.html pattern) ── */
+    .tabs-area {
+      display: flex;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-xl);
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: 0;
+    }
+
+    .tab-btn {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-text-light);
+      transition: all var(--transition-normal);
+      margin-bottom: -2px;
+    }
+
+    .tab-btn:hover { color: var(--color-primary); }
+
+    .tab-btn.active {
+      color: var(--color-primary);
+      border-bottom-color: var(--color-primary);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Content cards ── */
+    .concept-card {
+      background: var(--color-surface);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .concept-card h4 {
+      margin: 0 0 var(--spacing-sm) 0;
+      color: var(--color-primary);
+      font-size: 1rem;
+    }
+
+    .concept-card p { margin: 0; font-size: 0.95rem; line-height: 1.7; }
+
+    .example-box {
+      background: var(--color-background);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+    }
+
+    .example-box .example-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-light);
+      margin: 0 0 var(--spacing-sm) 0;
+    }
+
+    .example-box blockquote {
+      margin: 0;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--color-text);
+      border-left: 3px solid var(--color-accent);
+      padding-left: var(--spacing-md);
+    }
+
+    .example-box .source {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin-top: var(--spacing-sm);
+    }
+
+    .tip-box {
+      background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-secondary-light, #ede9fe) 100%);
+      border-radius: var(--border-radius-lg);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-lg) 0;
+      border: 1px solid rgba(37,99,235,0.2);
+    }
+
+    .tip-box strong { color: var(--color-primary); }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: var(--spacing-md) 0 0 0;
+    }
+
+    .checklist li {
+      padding: var(--spacing-sm) 0;
+      padding-left: var(--spacing-lg);
+      position: relative;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .checklist li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    /* ── Draft builder (mirrors relic.html outline-builder) ── */
+    .draft-builder {
+      background: linear-gradient(135deg, var(--color-primary-lighter) 0%, var(--color-secondary-light, #ede9fe) 100%);
+      padding: var(--spacing-xl);
+      border-radius: var(--border-radius-xl);
+      border: 1px solid rgba(37,99,235,0.2);
+    }
+
+    .draft-game-header {
+      background: var(--color-background);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: var(--spacing-lg);
+      border-left: 4px solid var(--color-primary);
+    }
+
+    .draft-game-header h3 { margin: 0 0 var(--spacing-sm) 0; }
+
+    .draft-input {
+      width: 100%;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+    }
+
+    .draft-section {
+      background: var(--color-background);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--color-border);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .draft-section h4 {
+      margin: 0 0 var(--spacing-xs) 0;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .draft-section h4 .num {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .draft-prompt {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin: 0 0 var(--spacing-md) 0;
+      padding-left: calc(28px + var(--spacing-sm));
+      font-style: italic;
+    }
+
+    .draft-textarea {
+      width: 100%;
+      padding: var(--spacing-md);
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      min-height: 130px;
+      resize: vertical;
+      transition: all var(--transition-normal);
+    }
+
+    .draft-textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px var(--color-primary-lighter);
+    }
+
+    .draft-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-border);
+      flex-wrap: wrap;
+    }
+
+    .button-danger {
+      background-color: var(--color-error, #dc2626);
+      color: white;
+    }
+
+    .button-danger:hover { background-color: #b91c1c; }
+
+    .generated-analysis {
+      background: var(--color-background);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--border-radius-xl);
+      padding: var(--spacing-xl);
+      margin-top: var(--spacing-xl);
+      display: none;
+    }
+
+    .generated-analysis.visible {
+      display: block;
+      animation: slideIn 300ms ease-in-out;
+    }
+
+    .analysis-text-output {
+      background: var(--color-surface);
+      padding: var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      margin: var(--spacing-lg) 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: var(--line-height-relaxed);
+      font-size: 0.92rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+
+    .analysis-output-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+
+    /* ── Lens selector intro (top of draft tab) ── */
+    .lens-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .lens-pick-btn {
+      padding: var(--spacing-lg);
+      background: var(--color-background);
+      border: 2px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-sans);
+      transition: all var(--transition-normal);
+    }
+
+    .lens-pick-btn:hover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-lighter);
+    }
+
+    .lens-pick-btn.selected {
+      border-color: var(--color-primary);
+      background: var(--color-primary-lighter);
+    }
+
+    .lens-pick-btn .pick-icon { font-size: 1.5rem; display: block; margin-bottom: var(--spacing-xs); }
+    .lens-pick-btn .pick-name { font-weight: 700; font-size: 0.95rem; display: block; margin-bottom: var(--spacing-xs); }
+    .lens-pick-btn .pick-desc { font-size: 0.82rem; color: var(--color-text-light); line-height: 1.5; }
+
+    .lens-pick-check {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--color-border);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 6px;
+      transition: all var(--transition-normal);
+    }
+
+    .lens-pick-btn.selected .lens-pick-check {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    /* ── Progress bar (mirrors quest) ── */
+    .analysis-progress-bar {
+      background: var(--color-surface);
+      padding: var(--spacing-md) var(--spacing-xl);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .analysis-progress-bar .progress-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-light);
+      margin: 0 0 var(--spacing-sm) 0;
+    }
+
+    .progress-indicators {
+      display: flex;
+      gap: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-border);
+      transition: background var(--transition-normal);
+    }
+
+    .progress-dot.visited { background: var(--color-primary); }
+
+    /* ── Notification ── */
+    .notification {
+      position: fixed;
+      bottom: var(--spacing-xl);
+      right: var(--spacing-xl);
+      padding: var(--spacing-md) var(--spacing-lg);
+      border-radius: var(--border-radius-lg);
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 1000;
+      animation: slideIn 200ms ease-out;
+    }
+
+    .notification.success {
+      background: #16a34a;
+      color: white;
+    }
+
+    .notification.error {
+      background: var(--color-error, #dc2626);
+      color: white;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .analysis-layout {
+        grid-template-columns: 1fr;
+        padding: var(--spacing-md);
+      }
+
+      .analysis-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+        padding-right: 0;
+        padding-bottom: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+      }
+
+      .lens-nav-item { padding: var(--spacing-sm) var(--spacing-md); }
+
+      .analysis-main { padding-left: 0; }
+
+      .lens-selector-grid { grid-template-columns: 1fr; }
+
+      .draft-actions { flex-direction: column; }
+
+      .draft-actions .button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="analysis-container">
+
+  <!-- Header -->
+  <header class="analysis-header">
+    <div class="header-content">
+      <a href="index.html" class="back-link">← Back to Home</a>
+      <h1>Phase 3: Critical Analysis</h1>
+      <p class="subtitle">Apply academic lenses to your approved game</p>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="analysis-layout">
+
+    <!-- Sidebar -->
+    <aside class="analysis-sidebar">
+      <p class="sidebar-label">Analysis Lenses</p>
+
+      <button class="lens-nav-item active" onclick="showLens('cultural')" id="nav-cultural">
+        <span class="lens-icon">🌍</span>Cultural Analysis
+      </button>
+      <button class="lens-nav-item" onclick="showLens('design')" id="nav-design">
+        <span class="lens-icon">🧩</span>Design Philosophy
+      </button>
+      <button class="lens-nav-item" onclick="showLens('representation')" id="nav-representation">
+        <span class="lens-icon">👥</span>Representation
+      </button>
+      <button class="lens-nav-item" onclick="showLens('industry')" id="nav-industry">
+        <span class="lens-icon">💼</span>Industry & Economy
+      </button>
+
+      <p class="sidebar-section-label">Your Work</p>
+      <button class="lens-nav-item" onclick="showLens('draft')" id="nav-draft">
+        <span class="lens-icon">✍️</span>Draft Your Analysis
+      </button>
+
+      <div class="sidebar-footer">
+        <p class="sidebar-note">Study each lens, then use <strong>Draft Your Analysis</strong> to build your submission. Your notes save automatically.</p>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="analysis-main">
+
+      <!-- ══ CULTURAL LENS ══ -->
+      <div class="lens-panel active" id="panel-cultural">
+        <div class="lens-title-bar">
+          <div class="lens-badge">🌍</div>
+          <div>
+            <h2>Cultural Analysis</h2>
+            <p>How does this game reflect, reinforce, or challenge culture?</p>
+          </div>
+        </div>
+
+        <div class="tabs-area" id="tabs-cultural">
+          <button class="tab-btn active" onclick="switchTab('cultural','concept')">Concept</button>
+          <button class="tab-btn" onclick="switchTab('cultural','example')">Example</button>
+          <button class="tab-btn" onclick="switchTab('cultural','apply')">Apply</button>
+        </div>
+
+        <div class="tab-content active" id="cultural-concept">
+          <p>Cultural analysis examines a game as an artifact of the society that made it. Every design choice — from who the protagonist is to what behaviors are rewarded — reflects assumptions about the world.</p>
+
+          <div class="concept-card">
+            <h4>What to look for: Values & Assumptions</h4>
+            <p>What does the game treat as normal? What worldview does it reward? Games often embed ideological assumptions so deeply that players never notice them. Your job is to notice.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>What to look for: Historical Context</h4>
+            <p>When was this game made? What was happening in gaming culture, broader culture, or the world? Great analysis connects a text to its moment of production.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>What to look for: Reception & Meaning-Making</h4>
+            <p>Different players experience the same game differently. Who is the assumed audience? Who was left out? How did communities actually interpret and use this game?</p>
+          </div>
+
+          <div class="tip-box">
+            <strong>Key vocabulary:</strong> ideology, hegemony, cultural artifact, reception, discourse, normalization, othering, the male gaze, power fantasy.
+          </div>
+        </div>
+
+        <div class="tab-content" id="cultural-example">
+          <div class="example-box">
+            <p class="example-label">Professional Example — Cultural Lens</p>
+            <blockquote>
+              "Red Dead Redemption 2 is obsessed with American mythology — the frontier, manifest destiny, the honorable outlaw — and it both celebrates and deconstructs that mythology simultaneously. The game knows the West it depicts was built on displacement and violence, and it forces you to participate in that violence even as it mourns it. This is not a western that glorifies the genre uncritically; it's a eulogy for it."
+            </blockquote>
+            <p class="source">— Adapted from critical analysis tradition</p>
+          </div>
+
+          <p><strong>Why this works:</strong> The writer identifies a specific cultural mythology the game engages with (the American West), names the ideology embedded in that mythology (manifest destiny, the honorable outlaw), and then shows how the game's design creates a <em>complicated</em> relationship to it rather than simple celebration. The analysis moves beyond "this game has western themes" to "here's what those themes mean and how the game handles them."</p>
+
+          <div class="tip-box">
+            <strong>Notice:</strong> The writer makes a claim about intent and effect. They don't just describe — they interpret. That's the move you're practicing.
+          </div>
+        </div>
+
+        <div class="tab-content" id="cultural-apply">
+          <p>Use these questions as your thinking prompts. You don't need to answer all of them — pick the 2–3 that open up the richest discussion for your specific game.</p>
+
+          <ul class="checklist">
+            <li>What cultural mythology or narrative does this game participate in? (Hero's journey? Frontier conquest? Rags-to-riches? Survival of the fittest?)</li>
+            <li>What values does succeeding at this game require you to practice or endorse?</li>
+            <li>What does the game treat as "natural" or "normal" that is actually a constructed cultural choice?</li>
+            <li>Where was this game made, and how does that national or corporate context shape its worldview?</li>
+            <li>How did different communities of players interpret this game differently from the developers' intent?</li>
+            <li>Does the game engage with historical events or systems? How accurately and responsibly?</li>
+            <li>What anxieties or desires of its cultural moment does this game express?</li>
+          </ul>
+
+          <div class="tip-box">
+            <strong>Strong claim structure:</strong> "[Game] participates in [cultural mythology/discourse] by [specific mechanic or design choice], which [effect/implication]." Example: "Fortnite participates in consumer culture by making cosmetic purchases the primary vehicle for identity expression, which normalizes the idea that self-presentation requires spending."
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DESIGN PHILOSOPHY LENS ══ -->
+      <div class="lens-panel" id="panel-design">
+        <div class="lens-title-bar">
+          <div class="lens-badge">🧩</div>
+          <div>
+            <h2>Design Philosophy</h2>
+            <p>What does this game believe about what games should be and do?</p>
+          </div>
+        </div>
+
+        <div class="tabs-area" id="tabs-design">
+          <button class="tab-btn active" onclick="switchTab('design','concept')">Concept</button>
+          <button class="tab-btn" onclick="switchTab('design','example')">Example</button>
+          <button class="tab-btn" onclick="switchTab('design','apply')">Apply</button>
+        </div>
+
+        <div class="tab-content active" id="design-concept">
+          <p>Every game embeds a theory of what games are for. Some believe games should challenge and punish failure. Others believe games should remove friction and maximize accessibility. Design philosophy analysis makes that theory explicit — and evaluates it.</p>
+
+          <div class="concept-card">
+            <h4>MDA Framework: Mechanics → Dynamics → Aesthetics</h4>
+            <p>Mechanics are the rules. Dynamics are what emerges when players interact with those rules. Aesthetics are the emotional experiences that emerge from those dynamics. Academic game analysis often traces this chain to understand why a game feels the way it feels.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Intentionality & the Implied Player</h4>
+            <p>Designers make choices for a specific imagined player. Who is the "implied player" this game was designed for? Are you that player? What happens when players outside that assumption encounter the game?</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Design Lineage</h4>
+            <p>No game exists in a vacuum. What games did this inherit from? What conventions did it break? How does understanding that lineage change how we evaluate the design choices?</p>
+          </div>
+
+          <div class="tip-box">
+            <strong>Key vocabulary:</strong> MDA framework, flow state, implied player, affordance, friction, game feel, ludonarrative dissonance, emergent gameplay, procedural rhetoric.
+          </div>
+        </div>
+
+        <div class="tab-content" id="design-example">
+          <div class="example-box">
+            <p class="example-label">Professional Example — Design Philosophy Lens</p>
+            <blockquote>
+              "Celeste makes a specific philosophical claim: failure is not punishment, it is information. Every death resets you instantly, with no load screens, no resource costs. The mechanic communicates a worldview — that trying is never penalized, only the absence of trying. This is not an accident of design. It is a coherent belief about what games can model about persistence."
+            </blockquote>
+            <p class="source">— Adapted from critical analysis tradition</p>
+          </div>
+
+          <p><strong>Why this works:</strong> The writer moves from a specific mechanic (instant respawn, no cost) to the philosophy that mechanic embeds (failure = information, not punishment) to the broader claim about what the game is <em>arguing</em>. This is design philosophy analysis at its best — it treats mechanical choices as meaningful statements.</p>
+
+          <div class="tip-box">
+            <strong>Ian Bogost's concept of "procedural rhetoric":</strong> games make arguments through the systems they implement, not just through narrative or dialogue. A game about resource management argues something about scarcity. A game about violence with no consequences argues something about the morality of violence.
+          </div>
+        </div>
+
+        <div class="tab-content" id="design-apply">
+          <p>Choose questions that unlock the most interesting discussion for your specific game:</p>
+
+          <ul class="checklist">
+            <li>What theory of fun or engagement does this game's design embody? Is it challenge-based, narrative-based, social, exploratory, expressive?</li>
+            <li>What does the game's approach to failure say about its beliefs about learning or persistence?</li>
+            <li>Who is the "implied player"? Is that assumption limiting or enabling?</li>
+            <li>What argument does the game make through its systems — not its story, but its rules?</li>
+            <li>How does this game's design relate to or break from its genre's conventions?</li>
+            <li>Where does the game create "ludonarrative dissonance" — where narrative and mechanics contradict each other?</li>
+            <li>What does the pacing, difficulty curve, or moment-to-moment flow reveal about the design philosophy?</li>
+          </ul>
+
+          <div class="tip-box">
+            <strong>Strong claim structure:</strong> "[Game]'s [specific mechanic/system] embodies a belief that [design philosophy claim], which [result/implication for player experience]." Example: "Dark Souls' punishment economy — souls lost on death, recoverable but risky — embeds a belief that meaningful reward requires meaningful risk, which transforms every encounter into a negotiation between caution and greed."
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ REPRESENTATION LENS ══ -->
+      <div class="lens-panel" id="panel-representation">
+        <div class="lens-title-bar">
+          <div class="lens-badge">👥</div>
+          <div>
+            <h2>Representation</h2>
+            <p>Who is present, absent, centered, or marginalized in this game?</p>
+          </div>
+        </div>
+
+        <div class="tabs-area" id="tabs-representation">
+          <button class="tab-btn active" onclick="switchTab('representation','concept')">Concept</button>
+          <button class="tab-btn" onclick="switchTab('representation','example')">Example</button>
+          <button class="tab-btn" onclick="switchTab('representation','apply')">Apply</button>
+        </div>
+
+        <div class="tab-content active" id="representation-concept">
+          <p>Representation analysis examines who gets to be a protagonist, who exists as a supporting character or enemy, and who is absent entirely. It also examines how groups are portrayed — with dignity and complexity, or as stereotypes.</p>
+
+          <div class="concept-card">
+            <h4>The Spectrum of Representation</h4>
+            <p>Representation exists on a spectrum from erasure (absent entirely) through stereotyping (present but reductive) to complexity (present with full humanity). Critical analysis identifies where on this spectrum a game sits — and asks why.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Character Agency vs. Function</h4>
+            <p>Characters can exist to serve the protagonist (as rewards, obstacles, or tools) rather than having their own goals and interiority. Who has narrative agency in this game? Whose perspective does the camera take?</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>The Default and the "Other"</h4>
+            <p>Games often have an assumed default player identity (frequently white, male, able-bodied, heterosexual). Everyone else is positioned as a variation, a choice, or an afterthought. Representation analysis names that default and examines what it costs.</p>
+          </div>
+
+          <div class="tip-box">
+            <strong>Key vocabulary:</strong> the male gaze, othering, the Bechdel test (adapted for games), intersectionality, diversity vs. inclusion, tokenism, stereotyping, narrative agency, the default protagonist.
+          </div>
+        </div>
+
+        <div class="tab-content" id="representation-example">
+          <div class="example-box">
+            <p class="example-label">Professional Example — Representation Lens</p>
+            <blockquote>
+              "Hades is remarkable not for having diverse characters, but for what it does with them. Every character — regardless of gender, sexuality, or ethnicity — has a full arc, a distinct voice, and meaningful agency over their own story. The game treats queerness not as a plot point or a source of drama but as unremarkable — a baseline assumption rather than a revelation. This normalization is a design choice with real stakes."
+            </blockquote>
+            <p class="source">— Adapted from critical analysis tradition</p>
+          </div>
+
+          <p><strong>Why this works:</strong> The writer doesn't just say "Hades has diverse characters" (a surface observation). They analyze the <em>quality</em> of that representation — full arcs, distinct voices, narrative agency — and identify a specific design choice (normalizing queerness rather than centering it as drama) and its implications. Representation analysis at this level is about <em>how</em>, not just <em>whether</em>.</p>
+        </div>
+
+        <div class="tab-content" id="representation-apply">
+          <ul class="checklist">
+            <li>Who is the protagonist? What does that choice center and what does it exclude?</li>
+            <li>How are women, people of color, LGBTQ+ people, or disabled people represented — as complex characters or as functions/stereotypes?</li>
+            <li>Who has narrative agency in this game? Whose desires drive the story?</li>
+            <li>What groups are absent entirely — and what does that absence communicate?</li>
+            <li>How does the game frame violence or conflict along identity lines?</li>
+            <li>Can players customize their identity? What does the game allow or restrict, and what does that communicate?</li>
+            <li>Has the game's representation improved or regressed over sequels or updates? What does that trajectory reveal?</li>
+          </ul>
+
+          <div class="tip-box">
+            <strong>Important:</strong> Representation analysis is descriptive and interpretive, not prescriptive. The goal is to understand and explain, not to issue a verdict. Strong analysis acknowledges complexity — a game can represent one group well and another poorly simultaneously.
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ INDUSTRY & ECONOMY LENS ══ -->
+      <div class="lens-panel" id="panel-industry">
+        <div class="lens-title-bar">
+          <div class="lens-badge">💼</div>
+          <div>
+            <h2>Industry & Economy</h2>
+            <p>How do commercial forces shape this game's design?</p>
+          </div>
+        </div>
+
+        <div class="tabs-area" id="tabs-industry">
+          <button class="tab-btn active" onclick="switchTab('industry','concept')">Concept</button>
+          <button class="tab-btn" onclick="switchTab('industry','example')">Example</button>
+          <button class="tab-btn" onclick="switchTab('industry','apply')">Apply</button>
+        </div>
+
+        <div class="tab-content active" id="industry-concept">
+          <p>Games are cultural objects, but they are also products made by companies operating under economic pressures. Understanding those pressures illuminates design choices that might otherwise seem arbitrary.</p>
+
+          <div class="concept-card">
+            <h4>Business Models & Player Psychology</h4>
+            <p>Free-to-play, subscription, live service, premium, DLC — different business models shape what gets designed. A free-to-play game with microtransactions has mechanical incentives to create desire and friction. Understanding the business model is understanding part of the design brief.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Labor & Production</h4>
+            <p>Who made this game, under what conditions, and for what compensation? Crunch culture, studio closures, and the power asymmetries between publishers and developers are part of the critical picture of any commercial game.</p>
+          </div>
+
+          <div class="concept-card">
+            <h4>Platform Economics</h4>
+            <p>Games exist within ecosystems — console exclusives, storefronts, hardware requirements. These platform relationships shape what games can be made and who can access them. Platform analysis is economic analysis.</p>
+          </div>
+
+          <div class="tip-box">
+            <strong>Key vocabulary:</strong> live service, microtransactions, crunch, AAA vs. indie, publisher/developer relationships, platform exclusivity, FOMO design, dark patterns, planned obsolescence, IP.
+          </div>
+        </div>
+
+        <div class="tab-content" id="industry-example">
+          <div class="example-box">
+            <p class="example-label">Professional Example — Industry Lens</p>
+            <blockquote>
+              "Destiny 2's seasonal model is not a content delivery system — it is an engineered anxiety machine. Content expires. FOMO is designed, not incidental. The game's 'live service' framing obscures that what's being sold is a subscription to perpetual incompleteness. Understanding this isn't cynicism; it's economic literacy about how the business model shapes every design decision."
+            </blockquote>
+            <p class="source">— Adapted from critical analysis tradition</p>
+          </div>
+
+          <p><strong>Why this works:</strong> The writer identifies a specific business model (live service seasonal content), names the psychological mechanism it deploys (FOMO, engineered anxiety), and reframes what the product actually is (subscription to incompleteness). This is industry analysis that moves from surface feature to underlying economic logic to player impact.</p>
+        </div>
+
+        <div class="tab-content" id="industry-apply">
+          <ul class="checklist">
+            <li>What is the business model, and how does it shape the design? (Microtransactions, DLC, subscription, premium, free-to-play)</li>
+            <li>Who published this game, and what commercial pressures did the publisher exert on the developer?</li>
+            <li>Is this a AAA, mid-tier, or indie game — and how does that production context shape what's possible?</li>
+            <li>Does the game use dark patterns (FOMO timers, loot boxes, artificial friction to drive spending)?</li>
+            <li>What do we know about the labor conditions that produced this game?</li>
+            <li>Is this game a platform exclusive? Who does that exclusivity benefit and who does it exclude?</li>
+            <li>How does the game's design reflect or resist the commercial pressures of its production context?</li>
+          </ul>
+
+          <div class="tip-box">
+            <strong>Strong claim structure:</strong> "[Game]'s [business model/commercial structure] creates [specific design incentive], which [effect on player experience or game culture]." Example: "FIFA's Ultimate Team loot box economy creates a design incentive to make skill gaps feel surmountable only through spending, which trains players to interpret losing as a purchasing problem rather than a skill problem."
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DRAFT YOUR ANALYSIS ══ -->
+      <div class="lens-panel" id="panel-draft">
+        <div class="lens-title-bar">
+          <div class="lens-badge">✍️</div>
+          <div>
+            <h2>Draft Your Analysis</h2>
+            <p>Build your critical analysis outline. Your notes save automatically.</p>
+          </div>
+        </div>
+
+        <section class="draft-builder">
+
+          <!-- Game info -->
+          <div class="draft-game-header">
+            <h3>Your Game</h3>
+            <input type="text" class="draft-input" id="analysis-game" placeholder="Game title (same game as your proposal)">
+          </div>
+
+          <!-- Lens selector -->
+          <div class="draft-section">
+            <h4><span class="num">→</span>Choose Your Primary Lens</h4>
+            <p class="draft-prompt">You may use multiple lenses — but anchor your analysis in one primary perspective. Which lens opens the most interesting conversation about your game?</p>
+            <div class="lens-selector-grid">
+              <button class="lens-pick-btn" id="pick-cultural" onclick="selectLens('cultural')">
+                <span class="pick-icon">🌍</span>
+                <span class="pick-name"><span class="lens-pick-check" id="check-cultural"></span>Cultural Analysis</span>
+                <span class="pick-desc">Values, ideology, historical context, reception</span>
+              </button>
+              <button class="lens-pick-btn" id="pick-design" onclick="selectLens('design')">
+                <span class="pick-icon">🧩</span>
+                <span class="pick-name"><span class="lens-pick-check" id="check-design"></span>Design Philosophy</span>
+                <span class="pick-desc">Mechanics as argument, MDA, implied player</span>
+              </button>
+              <button class="lens-pick-btn" id="pick-representation" onclick="selectLens('representation')">
+                <span class="pick-icon">👥</span>
+                <span class="pick-name"><span class="lens-pick-check" id="check-representation"></span>Representation</span>
+                <span class="pick-desc">Who is present, centered, absent, or stereotyped</span>
+              </button>
+              <button class="lens-pick-btn" id="pick-industry" onclick="selectLens('industry')">
+                <span class="pick-icon">💼</span>
+                <span class="pick-name"><span class="lens-pick-check" id="check-industry"></span>Industry & Economy</span>
+                <span class="pick-desc">Business models, labor, platform politics</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Section 1: Thesis -->
+          <div class="draft-section">
+            <h4><span class="num">1</span>Thesis Statement</h4>
+            <p class="draft-prompt">In 2–3 sentences: what is your central claim about this game through your chosen lens? This should be an arguable position, not a description.</p>
+            <textarea class="draft-textarea" id="draft-thesis" placeholder="Example: 'Through a cultural lens, Hollow Knight can be read as a meditation on industrial decline — a world of workers (Vessels) stripped of consciousness and purpose to serve a failed project, whose protagonist's journey forces confrontation with the cost of systems built on suppression.'"></textarea>
+          </div>
+
+          <!-- Section 2: Evidence & Analysis -->
+          <div class="draft-section">
+            <h4><span class="num">2</span>Evidence & Analysis</h4>
+            <p class="draft-prompt">Name 2–4 specific examples from the game that support your thesis. For each: describe the mechanic, image, character, or moment — then explain what it means through your lens.</p>
+            <textarea class="draft-textarea" id="draft-evidence" placeholder="Evidence 1: [Specific moment or mechanic]&#10;Analysis: [What it means through your chosen lens]&#10;&#10;Evidence 2: [Specific moment or mechanic]&#10;Analysis: [What it means through your chosen lens]&#10;&#10;Evidence 3: [Specific moment or mechanic]&#10;Analysis: [What it means through your chosen lens]"></textarea>
+          </div>
+
+          <!-- Section 3: Counterargument -->
+          <div class="draft-section">
+            <h4><span class="num">3</span>Counterargument & Complication</h4>
+            <p class="draft-prompt">Strong analysis acknowledges complexity. What would someone argue against your thesis? How does your game complicate or resist your interpretation? Engage with that honestly.</p>
+            <textarea class="draft-textarea" id="draft-counter" placeholder="A counterargument might be that...&#10;&#10;However, this reading is complicated by...&#10;&#10;The tension between these readings reveals..."></textarea>
+          </div>
+
+          <!-- Section 4: Broader significance -->
+          <div class="draft-section">
+            <h4><span class="num">4</span>Broader Significance</h4>
+            <p class="draft-prompt">Why does this analysis matter beyond the game itself? What does your reading reveal about games as a medium, culture, the industry, or society?</p>
+            <textarea class="draft-textarea" id="draft-significance" placeholder="This analysis matters because...&#10;&#10;What this game reveals about [games/culture/industry] is...&#10;&#10;If we read this game this way, it asks us to consider..."></textarea>
+          </div>
+
+          <!-- Section 5: Sources -->
+          <div class="draft-section">
+            <h4><span class="num">5</span>Academic Sources & References</h4>
+            <p class="draft-prompt">List the academic or critical sources you're drawing on. Include game studies scholars, cultural critics, journalism, or other cited works. Format per your instructor's style guide.</p>
+            <textarea class="draft-textarea" id="draft-sources" placeholder="1. Author, A. (Year). Title. Publisher.&#10;2. Author, B. (Year). Article title. Journal Name, Vol(Issue), pages.&#10;3. Creator, C. (Year). Game Title. Studio.&#10;4. ..."></textarea>
+          </div>
+
+          <!-- Actions -->
+          <div class="draft-actions">
+            <button class="button button-primary" onclick="generateAnalysis()">
+              📄 Generate Analysis Outline
+            </button>
+            <button class="button button-secondary button-danger" onclick="clearAnalysisData()">
+              🗑️ Clear & Start Over
+            </button>
+          </div>
+
+          <p style="color: var(--color-text-light); font-size: 0.9rem; margin-top: var(--spacing-lg);">
+            ℹ️ <strong>Your Data:</strong> Automatically saved to your browser (local storage, your device only). Generate, download, or copy your outline to submit through Canvas.
+          </p>
+        </section>
+
+        <!-- Generated output -->
+        <div class="generated-analysis" id="analysisContainer">
+          <div style="border-bottom: 2px solid var(--color-primary); padding-bottom: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+            <h3 style="margin: 0 0 var(--spacing-sm) 0;">Your Critical Analysis Outline</h3>
+            <p style="margin: 0; color: var(--color-text-light);">Copy to Word/Google Docs, format, and submit through Canvas.</p>
+          </div>
+          <div class="analysis-text-output" id="analysisContent"></div>
+          <div class="analysis-output-actions">
+            <button class="button button-primary" onclick="copyAnalysis()">📋 Copy to Clipboard</button>
+            <button class="button button-secondary" onclick="downloadAnalysis()">⬇️ Download as Text</button>
+            <button class="button button-secondary" onclick="document.getElementById('analysisContainer').classList.remove('visible')">✕ Close</button>
+          </div>
+        </div>
+
+        <!-- Submission info -->
+        <section class="content-section" style="margin-top: var(--spacing-xl);">
+          <h2>Submission & Grading</h2>
+          <div class="spec-block">
+            <h3>Format</h3>
+            <p>Submit your analysis as <strong>.doc, .pdf, or .rtf</strong> through Canvas. Use this tool to draft, then copy to Word/Google Docs to format before submitting.</p>
+          </div>
+          <div class="spec-block">
+            <h3>What to Include</h3>
+            <ul class="simple-list">
+              <li>A clear arguable thesis applying one primary analytical lens</li>
+              <li>2–4 specific textual examples with analysis (not just description)</li>
+              <li>Engagement with at least one counterargument</li>
+              <li>A reflection on broader significance</li>
+              <li>Properly cited academic or critical sources</li>
+            </ul>
+          </div>
+          <div class="spec-block">
+            <h3>Grading Criteria</h3>
+            <ul class="simple-list">
+              <li><strong>Thesis:</strong> Arguable, specific, lens-grounded claim</li>
+              <li><strong>Evidence:</strong> Specific game examples, not vague generalizations</li>
+              <li><strong>Analysis:</strong> Explaining <em>what</em> examples mean, not just describing them</li>
+              <li><strong>Complexity:</strong> Honest engagement with counterarguments</li>
+              <li><strong>Significance:</strong> Connecting your reading to broader stakes</li>
+              <li><strong>Sources:</strong> Proper citation of critical and academic sources</li>
+            </ul>
+          </div>
+        </section>
+
+        <footer class="page-footer">
+          <p><em>Canvas is your submission system.</em> Draft here, then submit a formatted document through Canvas. Your instructor reviews your submitted file.</p>
+        </footer>
+      </div>
+      <!-- end panel-draft -->
+
+    </main>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="analysis-progress-bar">
+    <p class="progress-label">Analysis Lenses Explored</p>
+    <div class="progress-indicators">
+      <div class="progress-item">
+        <span class="progress-dot" id="dot-cultural"></span>
+        <span>Cultural</span>
+      </div>
+      <div class="progress-item">
+        <span class="progress-dot" id="dot-design"></span>
+        <span>Design Philosophy</span>
+      </div>
+      <div class="progress-item">
+        <span class="progress-dot" id="dot-representation"></span>
+        <span>Representation</span>
+      </div>
+      <div class="progress-item">
+        <span class="progress-dot" id="dot-industry"></span>
+        <span>Industry & Economy</span>
+      </div>
+      <div class="progress-item">
+        <span class="progress-dot" id="dot-draft"></span>
+        <span>Draft Started</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .analysis-container -->
+
+<script>
+  const STORAGE_KEY = 'esports110_analysis';
+  const PROPOSAL_KEY = 'esports110_proposal';
+  let activeLens = 'cultural';
+  let visited = {};
+  let selectedLens = null;
+
+  /* ── Lens navigation ── */
+  function showLens(lensId) {
+    // Hide all panels
+    document.querySelectorAll('.lens-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.lens-nav-item').forEach(b => b.classList.remove('active'));
+
+    document.getElementById('panel-' + lensId).classList.add('active');
+    document.getElementById('nav-' + lensId).classList.add('active');
+    activeLens = lensId;
+
+    // Mark visited
+    visited[lensId] = true;
+    updateProgress();
+  }
+
+  /* ── Tab switching (per lens) ── */
+  function switchTab(lensId, tabId) {
+    const panel = document.getElementById('panel-' + lensId);
+    panel.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+    document.getElementById(lensId + '-' + tabId).classList.add('active');
+
+    // Find the clicked button
+    const buttons = document.getElementById('tabs-' + lensId).querySelectorAll('.tab-btn');
+    const tabOrder = ['concept', 'example', 'apply'];
+    const idx = tabOrder.indexOf(tabId);
+    if (idx >= 0 && buttons[idx]) buttons[idx].classList.add('active');
+  }
+
+  /* ── Lens picker in draft ── */
+  function selectLens(lensId) {
+    selectedLens = lensId;
+    document.querySelectorAll('.lens-pick-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('pick-' + lensId).classList.add('selected');
+    saveData();
+  }
+
+  /* ── Progress indicators ── */
+  function updateProgress() {
+    ['cultural', 'design', 'representation', 'industry', 'draft'].forEach(id => {
+      const dot = document.getElementById('dot-' + id);
+      if (dot) dot.classList.toggle('visited', !!visited[id]);
+    });
+    saveData();
+  }
+
+  /* ── Auto-save ── */
+  document.addEventListener('input', function(e) {
+    if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
+      saveData();
+      // Mark draft visited if they type anything
+      if (e.target.closest('#panel-draft')) {
+        visited['draft'] = true;
+        updateProgress();
+      }
+    }
+  });
+
+  function saveData() {
+    const data = {
+      game: document.getElementById('analysis-game').value,
+      thesis: document.getElementById('draft-thesis').value,
+      evidence: document.getElementById('draft-evidence').value,
+      counter: document.getElementById('draft-counter').value,
+      significance: document.getElementById('draft-significance').value,
+      sources: document.getElementById('draft-sources').value,
+      selectedLens,
+      visited
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.game) document.getElementById('analysis-game').value = data.game;
+        if (data.thesis) document.getElementById('draft-thesis').value = data.thesis;
+        if (data.evidence) document.getElementById('draft-evidence').value = data.evidence;
+        if (data.counter) document.getElementById('draft-counter').value = data.counter;
+        if (data.significance) document.getElementById('draft-significance').value = data.significance;
+        if (data.sources) document.getElementById('draft-sources').value = data.sources;
+        if (data.selectedLens) selectLens(data.selectedLens);
+        if (data.visited) { visited = data.visited; updateProgress(); }
+      } catch(e) {}
+    }
+
+    // Try to pull game title from proposal storage
+    const proposal = localStorage.getItem(PROPOSAL_KEY);
+    if (proposal) {
+      try {
+        const p = JSON.parse(proposal);
+        if (p.gameTitle && !document.getElementById('analysis-game').value) {
+          document.getElementById('analysis-game').value = p.gameTitle;
+        }
+      } catch(e) {}
+    }
+  }
+
+  /* ── Generate outline ── */
+  function generateAnalysis() {
+    const game = document.getElementById('analysis-game').value || 'Your Game';
+    const lens = selectedLens ? selectedLens.charAt(0).toUpperCase() + selectedLens.slice(1) : '[Select a lens above]';
+    const thesis = document.getElementById('draft-thesis').value || '[Your thesis]';
+    const evidence = document.getElementById('draft-evidence').value || '[Your evidence and analysis]';
+    const counter = document.getElementById('draft-counter').value || '[Your counterargument]';
+    const significance = document.getElementById('draft-significance').value || '[Your broader significance]';
+    const sources = document.getElementById('draft-sources').value || '[Your sources]';
+
+    const output =
+`CRITICAL ANALYSIS OUTLINE: ${game.toUpperCase()}
+================================================================================
+
+PRIMARY LENS: ${lens} Analysis
+
+1. THESIS STATEMENT
+────────────────────────────────────────────────────────────────────────────
+${thesis}
+
+2. EVIDENCE & ANALYSIS
+────────────────────────────────────────────────────────────────────────────
+${evidence}
+
+3. COUNTERARGUMENT & COMPLICATION
+────────────────────────────────────────────────────────────────────────────
+${counter}
+
+4. BROADER SIGNIFICANCE
+────────────────────────────────────────────────────────────────────────────
+${significance}
+
+5. ACADEMIC SOURCES & REFERENCES
+────────────────────────────────────────────────────────────────────────────
+${sources}
+
+================================================================================
+Generated via ESPORTS 110 Critical Analysis Tool
+Submit formatted version through Canvas.`;
+
+    document.getElementById('analysisContent').textContent = output;
+    document.getElementById('analysisContainer').classList.add('visible');
+    document.getElementById('analysisContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    showNotification('Outline generated! Copy or download below.', 'success');
+  }
+
+  /* ── Copy & Download ── */
+  function copyAnalysis() {
+    const text = document.getElementById('analysisContent').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      showNotification('Copied! Paste into Word or Google Docs.', 'success');
+    }).catch(() => {
+      showNotification('Copy failed — try the download button instead.', 'error');
+    });
+  }
+
+  function downloadAnalysis() {
+    const game = document.getElementById('analysis-game').value || 'critical_analysis';
+    const text = document.getElementById('analysisContent').textContent;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'analysis_' + game.replace(/\s+/g, '_').toLowerCase() + '.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    showNotification('Downloaded! Format in Word/Docs and submit through Canvas.', 'success');
+  }
+
+  function clearAnalysisData() {
+    if (confirm('Clear all analysis data? This cannot be undone.')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  }
+
+  /* ── Notification ── */
+  function showNotification(message, type) {
+    const n = document.createElement('div');
+    n.className = 'notification ' + (type || 'success');
+    n.textContent = message;
+    document.body.appendChild(n);
+    setTimeout(() => n.remove(), 4000);
+  }
+
+  /* ── Init ── */
+  window.addEventListener('load', loadData);
+</script>
+</body>
+</html>
