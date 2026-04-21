@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hollywood Squares: Game Studies</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a30;
+      --panel-2: #1a2545;
+      --line: rgba(255,255,255,0.1);
+      --text: #eef2ff;
+      --muted: #b8c1ec;
+      --accent: #fbbf24;
+      --accent-2: #60a5fa;
+      --x: #38bdf8;
+      --o: #f472b6;
+      --used: #475569;
+      --good: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 18px 40px rgba(0,0,0,.28);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #050816, #0b1020 45%, #111827);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .top {
+      display: grid;
+      grid-template-columns: 1.35fr .95fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: rgba(18,26,48,.92);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero { padding: 22px; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.05;
+    }
+    .sub {
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 70ch;
+      margin-bottom: 14px;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .92rem;
+      color: #dbeafe;
+      background: rgba(96,165,250,.14);
+      border: 1px solid rgba(96,165,250,.24);
+    }
+
+    .scoreboard, .controls, .board-wrap, .notes {
+      padding: 18px;
+    }
+    .scoreboard h2, .controls h2, .notes h2 { margin: 0 0 12px; font-size: 1.12rem; }
+
+    .teams {
+      display: grid;
+      gap: 12px;
+    }
+    .team {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 18px;
+      padding: 12px;
+    }
+    .team-head {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .team-name {
+      width: 100%; background: transparent; color: var(--text); border: 0; outline: none; font-size: 1rem; font-weight: 800;
+    }
+    .score { font-size: 1.65rem; font-weight: 900; color: var(--accent); min-width: 72px; text-align: right; }
+    .score-controls { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+
+    button, select, textarea, input {
+      font: inherit;
+    }
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    .btn-main { background: var(--accent); color: #111827; }
+    .btn-soft { background: rgba(255,255,255,.08); color: var(--text); }
+    .btn-alt { background: rgba(96,165,250,.18); color: #dbeafe; }
+    .btn-pos { background: rgba(34,197,94,.18); color: #dcfce7; }
+    .btn-neg { background: rgba(239,68,68,.18); color: #fee2e2; }
+    .btn-x { background: rgba(56,189,248,.18); color: #e0f2fe; }
+    .btn-o { background: rgba(244,114,182,.18); color: #fce7f3; }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .control-row {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    }
+    label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+      color: var(--muted);
+      padding: 10px 12px;
+      border-radius: 14px;
+    }
+    select {
+      background: rgba(2,6,23,.55);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .board-wrap { padding-top: 10px; }
+    .round-title {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px;
+    }
+    .round-title h2 { margin: 0; font-size: 1.25rem; }
+    .status { color: var(--muted); font-size: .95rem; }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+    }
+
+    .square {
+      min-height: 170px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, #1e3a8a, #172554);
+      padding: 14px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      color: var(--text);
+    }
+    .square.used {
+      background: linear-gradient(180deg, #334155, #1e293b);
+      color: #cbd5e1;
+    }
+    .square.claimed-x {
+      outline: 3px solid rgba(56,189,248,.5);
+      box-shadow: inset 0 0 0 2px rgba(56,189,248,.25);
+    }
+    .square.claimed-o {
+      outline: 3px solid rgba(244,114,182,.5);
+      box-shadow: inset 0 0 0 2px rgba(244,114,182,.25);
+    }
+    .square-top {
+      display: flex; justify-content: space-between; align-items: start; gap: 10px;
+    }
+    .square-number {
+      font-size: .9rem; color: var(--muted); font-weight: 700;
+    }
+    .mark {
+      width: 40px; height: 40px; border-radius: 999px; display: grid; place-items: center; font-size: 1.25rem; font-weight: 900;
+      border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.06);
+    }
+    .mark.x { color: var(--x); }
+    .mark.o { color: var(--o); }
+    .mark.empty { color: transparent; }
+
+    .square-title {
+      font-size: clamp(1rem, 1.6vw, 1.2rem);
+      font-weight: 900;
+      line-height: 1.22;
+    }
+    .square-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; color: var(--muted); font-size: .92rem;
+    }
+
+    .notes p { color: var(--muted); line-height: 1.55; margin: 0; }
+
+    .modal {
+      position: fixed; inset: 0; background: rgba(2,6,23,.8); display: none; align-items: center; justify-content: center; padding: 18px; z-index: 100;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(980px, 100%);
+      background: linear-gradient(180deg, #0f172a, #111827);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .modal-top {
+      padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03);
+    }
+    .modal-body { padding: 22px; display: grid; gap: 18px; }
+    .meta { color: var(--muted); font-size: .95rem; }
+    .prompt-title { font-size: 1.55rem; font-weight: 900; line-height: 1.2; }
+    .prompt-box, .answer-box, .edit-box {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius: 20px; padding: 16px;
+    }
+    .prompt-text { font-size: 1.08rem; line-height: 1.6; }
+    .answer-box { display: none; }
+    .answer-box.open { display: block; }
+    .answer-line { font-size: 1.15rem; font-weight: 900; color: var(--accent); margin-bottom: 8px; }
+    .teacher-note { color: var(--muted); font-style: italic; margin-top: 10px; }
+    .modal-actions {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .actions-left, .actions-right { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .edit-box { display: none; gap: 10px; }
+    .edit-box.open { display: grid; }
+    .edit-grid { display: grid; gap: 10px; }
+    textarea, input[type="text"] {
+      width: 100%;
+      background: rgba(2,6,23,.55);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    .small { color: var(--muted); font-size: .9rem; }
+
+    @media (max-width: 1080px) {
+      .top, .controls-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .board { grid-template-columns: 1fr; }
+      .score-controls { grid-template-columns: repeat(2,1fr); }
+      .modal-actions { flex-direction: column; align-items: stretch; }
+      .actions-left, .actions-right { width: 100%; }
+      .actions-left button, .actions-right button { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="top">
+      <div class="card hero">
+        <h1>Hollywood Squares: Game Studies</h1>
+        <div class="sub">
+          A single-file classroom game for GitHub Pages. Play up to <strong>10 rounds</strong>, click any square to open the prompt, reveal the answer when ready, and claim the square for X or O. Built for easy teacher control and fast class discussion.
+        </div>
+        <div class="pill-row">
+          <span class="pill">Up to 10 rounds</span>
+          <span class="pill">Editable prompts</span>
+          <span class="pill">X / O claiming</span>
+          <span class="pill">Team scoring</span>
+          <span class="pill">Local autosave</span>
+        </div>
+      </div>
+
+      <aside class="card scoreboard">
+        <h2>Scoreboard</h2>
+        <div class="teams" id="teams"></div>
+      </aside>
+    </section>
+
+    <section class="card controls">
+      <div class="controls-grid">
+        <div>
+          <h2>Teacher Controls</h2>
+          <div class="control-row" style="margin-top: 12px;">
+            <label>
+              Round
+              <select id="roundSelect"></select>
+            </label>
+            <label>
+              Teams
+              <select id="teamCount">
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </label>
+            <button class="btn-main" id="resetRoundBtn">Reset This Round</button>
+            <button class="btn-soft" id="resetAllBtn">Reset All Rounds</button>
+            <button class="btn-alt" id="editRoundBtn">Edit Round Prompts</button>
+          </div>
+        </div>
+        <div>
+          <h2>How to Use It</h2>
+          <div class="small" style="line-height: 1.6; margin-top: 12px;">
+            Click a square. Ask the prompt. Reveal the answer if needed. Claim the square for X or O. Award points if you want. Win the round by making three in a row, or just use the board as a whole-class discussion game.
+          </div>
+        </div>
+      </div>
+
+      <div class="round-title">
+        <h2 id="roundHeading">Round 1</h2>
+        <div class="status" id="roundStatus">0 of 9 squares claimed</div>
+      </div>
+
+      <div class="board-wrap">
+        <div class="board" id="board"></div>
+      </div>
+    </section>
+
+    <section class="card notes">
+      <h2>Teacher Reminder</h2>
+      <p>
+        Keep the follow-up where the learning happens. After a team answers, make them explain <strong>why</strong>, connect the idea to a game or assignment, or improve the answer into a stronger analytical claim.
+      </p>
+    </section>
+  </div>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div>
+          <div id="modalMeta" class="meta"></div>
+          <div id="modalTitle" style="font-size:1.08rem; font-weight:800;"></div>
+        </div>
+        <button class="btn-soft" id="closeModalBtn">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="prompt-box">
+          <div class="prompt-title" id="promptTitle"></div>
+          <div class="prompt-text" id="promptText"></div>
+        </div>
+
+        <div class="answer-box" id="answerBox">
+          <div class="answer-line" id="answerLine"></div>
+          <div id="answerText"></div>
+          <div class="teacher-note" id="teacherNote"></div>
+        </div>
+
+        <div class="edit-box" id="editBox">
+          <div class="edit-grid">
+            <label style="display:block; background:none; border:0; padding:0; color:var(--text);">
+              <div class="small" style="margin-bottom:6px;">Square Title</div>
+              <input type="text" id="editTitle" />
+            </label>
+            <label style="display:block; background:none; border:0; padding:0; color:var(--text);">
+              <div class="small" style="margin-bottom:6px;">Prompt</div>
+              <textarea id="editPrompt"></textarea>
+            </label>
+            <label style="display:block; background:none; border:0; padding:0; color:var(--text);">
+              <div class="small" style="margin-bottom:6px;">Answer / Talking Points</div>
+              <textarea id="editAnswer"></textarea>
+            </label>
+            <label style="display:block; background:none; border:0; padding:0; color:var(--text);">
+              <div class="small" style="margin-bottom:6px;">Teacher Note / Follow-Up</div>
+              <textarea id="editNote"></textarea>
+            </label>
+            <div>
+              <button class="btn-main" id="saveEditBtn">Save Square</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <div class="actions-left">
+            <button class="btn-main" id="revealAnswerBtn">Reveal Answer</button>
+            <button class="btn-soft" id="toggleEditBtn">Edit This Square</button>
+          </div>
+          <div class="actions-right">
+            <button class="btn-x" id="claimXBtn">Claim X</button>
+            <button class="btn-o" id="claimOBtn">Claim O</button>
+            <button class="btn-neg" id="clearClaimBtn">Clear Claim</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const defaultRoundTemplate = (n) => ({
+      name: `Round ${n}`,
+      squares: [
+        { title: 'Review vs. Analysis', prompt: 'Is this statement closer to a review or an academic analysis? Explain why.', answer: 'Students should identify whether the statement is evaluative or interpretive and justify the choice with specific language.', note: 'Push them to explain what makes a claim analytical.', claim: '', used: false },
+        { title: 'Mechanics Create Meaning', prompt: 'Give one example of a mechanic creating meaning in a game you studied this semester.', answer: 'A strong answer names the mechanic and explains what idea, theme, or emotion it creates.', note: 'Do not accept just the game title. Make them explain the connection.', claim: '', used: false },
+        { title: 'Ethics', prompt: 'Name one ethical issue a game can raise and explain why it matters.', answer: 'Good answers connect ethics to player choices, systems, representation, monetization, or simulated actions.', note: 'Ask whether the issue comes from story, mechanics, or culture.', claim: '', used: false },
+        { title: 'Controversy', prompt: 'Choose one game controversy from the semester. Was it legitimate critique, moral panic, or both?', answer: 'A strong answer names the controversy and explains the reasoning, not just the label.', note: 'Have them identify what the controversy was actually about.', claim: '', used: false },
+        { title: 'Representation', prompt: 'Why does representation matter in game analysis?', answer: 'It shapes who is visible, who is centered, how identity is portrayed, and how players and audiences respond.', note: 'Ask for an example from a game or controversy.', claim: '', used: false },
+        { title: 'Game History', prompt: 'Name one historical moment in gaming that changed how people thought about games.', answer: 'Students could reference the rise of home consoles, ESRB, 3D gaming, online worlds, indie games, or monetization shifts.', note: 'Ask what changed and why it mattered.', claim: '', used: false },
+        { title: 'Player Choice', prompt: 'What is the difference between meaningful choice and the illusion of choice?', answer: 'Meaningful choice changes outcomes, interpretation, or player experience in a real way. Illusion of choice only looks important.', note: 'Ask for an example from a game.', claim: '', used: false },
+        { title: 'Evidence', prompt: 'What kind of evidence makes an academic game analysis stronger?', answer: 'Specific mechanics, scenes, systems, design patterns, player actions, cultural context, or quoted ideas from an article.', note: 'Push them beyond vague words like “good” or “important.”', claim: '', used: false },
+        { title: 'Final Boss', prompt: 'Give a one-sentence academic claim about any game.', answer: 'A strong claim should be specific, arguable, and focused on how the game creates meaning.', note: 'Bonus: ask what evidence they would use to prove it.', claim: '', used: false }
+      ]
+    });
+
+    const state = {
+      currentRound: 0,
+      teamCount: 2,
+      teams: [
+        { name: 'Team X', score: 0, marker: 'X' },
+        { name: 'Team O', score: 0, marker: 'O' },
+        { name: 'Team 3', score: 0, marker: '3' },
+        { name: 'Team 4', score: 0, marker: '4' }
+      ],
+      rounds: Array.from({ length: 10 }, (_, i) => defaultRoundTemplate(i + 1)),
+      currentSquare: null
+    };
+
+    const teamsEl = document.getElementById('teams');
+    const roundSelectEl = document.getElementById('roundSelect');
+    const teamCountEl = document.getElementById('teamCount');
+    const boardEl = document.getElementById('board');
+    const roundHeadingEl = document.getElementById('roundHeading');
+    const roundStatusEl = document.getElementById('roundStatus');
+    const modal = document.getElementById('modal');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalTitle = document.getElementById('modalTitle');
+    const promptTitle = document.getElementById('promptTitle');
+    const promptText = document.getElementById('promptText');
+    const answerBox = document.getElementById('answerBox');
+    const answerLine = document.getElementById('answerLine');
+    const answerText = document.getElementById('answerText');
+    const teacherNote = document.getElementById('teacherNote');
+    const editBox = document.getElementById('editBox');
+    const editTitle = document.getElementById('editTitle');
+    const editPrompt = document.getElementById('editPrompt');
+    const editAnswer = document.getElementById('editAnswer');
+    const editNote = document.getElementById('editNote');
+
+    function saveState() {
+      localStorage.setItem('hollywoodSquaresGameStudiesState', JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem('hollywoodSquaresGameStudiesState');
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.rounds && parsed.teams) {
+          state.currentRound = parsed.currentRound ?? 0;
+          state.teamCount = parsed.teamCount ?? 2;
+          state.teams = parsed.teams;
+          state.rounds = parsed.rounds;
+        }
+      } catch (err) {
+        console.warn('Could not load saved state', err);
+      }
+    }
+
+    function currentRound() {
+      return state.rounds[state.currentRound];
+    }
+
+    function renderRoundOptions() {
+      roundSelectEl.innerHTML = '';
+      state.rounds.forEach((round, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = round.name;
+        roundSelectEl.appendChild(opt);
+      });
+      roundSelectEl.value = String(state.currentRound);
+    }
+
+    function renderTeams() {
+      teamCountEl.value = String(state.teamCount);
+      teamsEl.innerHTML = '';
+      for (let i = 0; i < state.teamCount; i++) {
+        const team = state.teams[i];
+        const el = document.createElement('div');
+        el.className = 'team';
+        el.innerHTML = `
+          <div class="team-head">
+            <input class="team-name" value="${escapeHtml(team.name)}" aria-label="Team name ${i + 1}" />
+            <div class="score">${team.score}</div>
+          </div>
+          <div class="score-controls">
+            <button class="btn-pos">+1</button>
+            <button class="btn-neg">-1</button>
+            <button class="btn-pos">+2</button>
+            <button class="btn-soft">Reset</button>
+          </div>
+        `;
+        const input = el.querySelector('.team-name');
+        const scoreEl = el.querySelector('.score');
+        const [plus, minus, plusTwo, reset] = el.querySelectorAll('button');
+
+        input.addEventListener('input', (e) => {
+          state.teams[i].name = e.target.value || `Team ${i + 1}`;
+          saveState();
+        });
+        plus.addEventListener('click', () => { state.teams[i].score += 1; saveState(); renderTeams(); });
+        minus.addEventListener('click', () => { state.teams[i].score -= 1; saveState(); renderTeams(); });
+        plusTwo.addEventListener('click', () => { state.teams[i].score += 2; saveState(); renderTeams(); });
+        reset.addEventListener('click', () => { state.teams[i].score = 0; saveState(); renderTeams(); });
+
+        teamsEl.appendChild(el);
+      }
+    }
+
+    function renderBoard() {
+      const round = currentRound();
+      roundHeadingEl.textContent = round.name;
+      const claimed = round.squares.filter(s => s.claim).length;
+      roundStatusEl.textContent = `${claimed} of 9 squares claimed`;
+      boardEl.innerHTML = '';
+
+      round.squares.forEach((sq, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'square';
+        if (sq.used) btn.classList.add('used');
+        if (sq.claim === 'X') btn.classList.add('claimed-x');
+        if (sq.claim === 'O') btn.classList.add('claimed-o');
+        const markClass = sq.claim === 'X' ? 'x' : sq.claim === 'O' ? 'o' : 'empty';
+        const markText = sq.claim || '•';
+        btn.innerHTML = `
+          <div class="square-top">
+            <div class="square-number">Square ${idx + 1}</div>
+            <div class="mark ${markClass}">${markText}</div>
+          </div>
+          <div class="square-title">${escapeHtml(sq.title)}</div>
+          <div class="square-foot">
+            <span>${sq.used ? 'Opened' : 'Not opened yet'}</span>
+            <span>${sq.claim ? `Claimed by ${sq.claim}` : 'Unclaimed'}</span>
+          </div>
+        `;
+        btn.addEventListener('click', () => openSquare(idx));
+        boardEl.appendChild(btn);
+      });
+    }
+
+    function openSquare(index) {
+      const sq = currentRound().squares[index];
+      state.currentSquare = index;
+      modalMeta.textContent = `${currentRound().name} • Square ${index + 1}`;
+      modalTitle.textContent = sq.title;
+      promptTitle.textContent = sq.title;
+      promptText.textContent = sq.prompt;
+      answerLine.textContent = 'Suggested answer / talking points';
+      answerText.textContent = sq.answer;
+      teacherNote.textContent = `Teacher follow-up: ${sq.note}`;
+      answerBox.classList.remove('open');
+      editBox.classList.remove('open');
+      editTitle.value = sq.title;
+      editPrompt.value = sq.prompt;
+      editAnswer.value = sq.answer;
+      editNote.value = sq.note;
+      sq.used = true;
+      saveState();
+      renderBoard();
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      state.currentSquare = null;
+    }
+
+    function claimSquare(marker) {
+      if (state.currentSquare === null) return;
+      currentRound().squares[state.currentSquare].claim = marker;
+      saveState();
+      renderBoard();
+      checkWin();
+    }
+
+    function clearClaim() {
+      if (state.currentSquare === null) return;
+      currentRound().squares[state.currentSquare].claim = '';
+      saveState();
+      renderBoard();
+    }
+
+    function checkWin() {
+      const claims = currentRound().squares.map(s => s.claim);
+      const wins = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      for (const [a,b,c] of wins) {
+        if (claims[a] && claims[a] === claims[b] && claims[a] === claims[c]) {
+          setTimeout(() => alert(`${claims[a]} wins ${currentRound().name}!`), 50);
+          return;
+        }
+      }
+    }
+
+    function saveSquareEdits() {
+      if (state.currentSquare === null) return;
+      const sq = currentRound().squares[state.currentSquare];
+      sq.title = editTitle.value.trim() || sq.title;
+      sq.prompt = editPrompt.value.trim() || sq.prompt;
+      sq.answer = editAnswer.value.trim() || sq.answer;
+      sq.note = editNote.value.trim() || sq.note;
+      saveState();
+      renderBoard();
+      openSquare(state.currentSquare);
+      editBox.classList.add('open');
+    }
+
+    function resetThisRound() {
+      const oldName = currentRound().name;
+      state.rounds[state.currentRound] = defaultRoundTemplate(state.currentRound + 1);
+      state.rounds[state.currentRound].name = oldName;
+      saveState();
+      renderBoard();
+    }
+
+    function resetAll() {
+      state.currentRound = 0;
+      state.teamCount = 2;
+      state.teams = [
+        { name: 'Team X', score: 0, marker: 'X' },
+        { name: 'Team O', score: 0, marker: 'O' },
+        { name: 'Team 3', score: 0, marker: '3' },
+        { name: 'Team 4', score: 0, marker: '4' }
+      ];
+      state.rounds = Array.from({ length: 10 }, (_, i) => defaultRoundTemplate(i + 1));
+      saveState();
+      renderRoundOptions();
+      renderTeams();
+      renderBoard();
+    }
+
+    function editRoundName() {
+      const newName = prompt('Name this round:', currentRound().name);
+      if (newName && newName.trim()) {
+        currentRound().name = newName.trim();
+        saveState();
+        renderRoundOptions();
+        renderBoard();
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('revealAnswerBtn').addEventListener('click', () => answerBox.classList.toggle('open'));
+    document.getElementById('claimXBtn').addEventListener('click', () => claimSquare('X'));
+    document.getElementById('claimOBtn').addEventListener('click', () => claimSquare('O'));
+    document.getElementById('clearClaimBtn').addEventListener('click', clearClaim);
+    document.getElementById('toggleEditBtn').addEventListener('click', () => editBox.classList.toggle('open'));
+    document.getElementById('saveEditBtn').addEventListener('click', saveSquareEdits);
+    document.getElementById('resetRoundBtn').addEventListener('click', () => { if (confirm('Reset this round?')) resetThisRound(); });
+    document.getElementById('resetAllBtn').addEventListener('click', () => { if (confirm('Reset all rounds, teams, and scores?')) resetAll(); });
+    document.getElementById('editRoundBtn').addEventListener('click', editRoundName);
+
+    roundSelectEl.addEventListener('change', (e) => {
+      state.currentRound = Number(e.target.value);
+      saveState();
+      renderBoard();
+    });
+
+    teamCountEl.addEventListener('change', (e) => {
+      state.teamCount = Number(e.target.value);
+      saveState();
+      renderTeams();
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      if (e.key.toLowerCase() === 'r' && modal.classList.contains('open')) answerBox.classList.toggle('open');
+      if (e.key.toLowerCase() === 'x' && modal.classList.contains('open')) claimSquare('X');
+      if (e.key.toLowerCase() === 'o' && modal.classList.contains('open')) claimSquare('O');
+    });
+
+    loadState();
+    renderRoundOptions();
+    renderTeams();
+    renderBoard();
+  </script>
+</body>
+</html>
