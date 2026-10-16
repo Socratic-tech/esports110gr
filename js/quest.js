@@ -1,11 +1,48 @@
 // ESPORTS 110 Game Review Training - Quest Navigation
 // Handles section selection, tab switching, and content display
 
+// Saved on this device, like the proposal and analysis pages:
+// { section, tab, notes: { [sectionId]: text } }
+const QUEST_STORAGE_KEY = 'esports110_quest';
+
 class GameReviewQuest {
     constructor() {
         this.currentSection = 'introduction';
         this.currentTab = 'example'; // example, weak, explain, or practice
+        this.notes = {};
+        this.loadData();
         this.init();
+    }
+
+    loadData() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(QUEST_STORAGE_KEY) || 'null');
+            if (!saved) return;
+            if (questData.sections.some(s => s.id === saved.section)) this.currentSection = saved.section;
+            if (['example', 'weak', 'explain', 'practice'].includes(saved.tab)) this.currentTab = saved.tab;
+            if (saved.notes && typeof saved.notes === 'object') this.notes = saved.notes;
+        } catch (e) { /* unreadable save: start fresh */ }
+    }
+
+    saveData() {
+        try {
+            localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify({
+                section: this.currentSection,
+                tab: this.currentTab,
+                notes: this.notes
+            }));
+        } catch (e) { /* storage blocked or full */ }
+    }
+
+    // A progress dot fills in once that section has practice notes.
+    updateProgress() {
+        const items = document.querySelectorAll('.progress-indicators .progress-item');
+        questData.sections.forEach((section, i) => {
+            if (!items[i]) return;
+            const done = Boolean((this.notes[section.id] || '').trim());
+            items[i].querySelector('.progress-dot').style.backgroundColor = done ? 'var(--color-primary)' : '';
+            items[i].title = done ? 'Practice notes saved' : '';
+        });
     }
 
     init() {
@@ -13,6 +50,7 @@ class GameReviewQuest {
         this.renderNav();
         this.renderContent();
         this.attachEventListeners();
+        this.updateProgress();
     }
 
     renderNav() {
@@ -121,11 +159,46 @@ class GameReviewQuest {
 
         html += '</div>';
         contentContainer.innerHTML = html;
+
+        if (this.currentTab === 'practice') this.renderNotes(section, contentContainer.firstElementChild);
+    }
+
+    // Student text is only ever set through .value, never as HTML.
+    renderNotes(section, pane) {
+        const wrap = document.createElement('div');
+        wrap.style.marginTop = '2rem';
+
+        const label = document.createElement('label');
+        label.htmlFor = 'quest-notes';
+        label.innerHTML = '<strong>Your practice notes</strong>';
+
+        const textarea = document.createElement('textarea');
+        textarea.id = 'quest-notes';
+        textarea.rows = 8;
+        textarea.style.width = '100%';
+        textarea.style.marginTop = '0.5rem';
+        textarea.placeholder = 'Answer the prompts above or draft your paragraph here.';
+        textarea.value = this.notes[section.id] || '';
+
+        const status = document.createElement('p');
+        status.style.fontSize = '0.85rem';
+        status.style.color = 'var(--color-text-light)';
+        status.textContent = 'Saved on this device as you type.';
+
+        textarea.addEventListener('input', () => {
+            this.notes[section.id] = textarea.value;
+            this.saveData();
+            this.updateProgress();
+        });
+
+        wrap.append(label, textarea, status);
+        pane.appendChild(wrap);
     }
 
     setSection(sectionId) {
         this.currentSection = sectionId;
         this.currentTab = 'example'; // Reset to example when changing sections
+        this.saveData();
         this.renderNav();
         this.renderContent();
         
@@ -135,6 +208,7 @@ class GameReviewQuest {
 
     setTab(tabName) {
         this.currentTab = tabName;
+        this.saveData();
         const section = questData.sections.find(s => s.id === this.currentSection);
         this.renderTabContent(section);
         
